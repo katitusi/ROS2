@@ -11,26 +11,14 @@ services:
     container_name: ros2-dev
     stdin_open: true
     tty: true
-    # Linux: host network для multicast DDS
-    # Windows/Mac: закомментировать и использовать bridge + CycloneDDS unicast
     network_mode: host
-    # Для GPU (NVIDIA) - только для Linux с nvidia-docker2
-    # Раскомментируйте на Linux:
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities: [gpu]
     volumes:
-      # Монтируем workspace для разработки
       - ./src:/ws/src
       - ./install:/ws/install
       - ./build:/ws/build
       - ./log:/ws/log
-      # Кэш для ccache
       - ccache:/root/.ccache
+    command: bash -c "source /opt/ros/humble/setup.bash && bash"
     environment:
       - DISPLAY=${DISPLAY}
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
