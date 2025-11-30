@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y \
     ros-humble-demo-nodes-cpp \
     ros-humble-demo-nodes-py \
     ros-humble-moveit \
+    ros-humble-moveit-py \
+    python3-moveit-commander \
     ros-humble-ros2-control \
     ros-humble-ros2-controllers \
     ros-humble-xacro \
