@@ -8,14 +8,43 @@ Dieses Projekt enthält drei Demo-Anwendungen für den igus ReBeL 6DOF Roboter m
 - Mindestens 8 GB RAM
 - Windows 10/11 mit PowerShell
 
-## 🎯 Verfügbare Demos
+## 🚀 Schritt 1: Simulation starten
+
+**WICHTIG**: Vor dem Start einer Demo muss die Simulation gestartet werden!
+
+### Methode 1: Doppelklick (einfachste Methode)
+Doppelklick auf `start_sim.bat` im Projektordner
+
+### Methode 2: PowerShell Befehl
+```powershell
+Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_sim.bat"
+```
+
+**Was wird gestartet:**
+- Docker Container mit ROS2 Humble
+- Igus ReBeL Simulation (mock hardware)
+- Rosbridge Server (Port 9090 für Foxglove)
+- MoveIt2 Motion Planning
+
+**Warten Sie**, bis Sie die Meldung sehen:
+```
+✅ Rosbridge ready at ws://localhost:9090
+🤖 Starting ReBeL Simulation...
+```
+
+---
+
+## 🎯 Schritt 2: Demo auswählen und starten
 
 ### 1. **Simple MoveIt Demo** - Grundlegende Bewegungssteuerung
 Einfache Demo zur Steuerung des Roboters über MoveIt2-Schnittstelle.
 
-**Start:**
+**Start (Methode 1 - Doppelklick):**
+Doppelklick auf `start_simple_demo.bat`
+
+**Start (Methode 2 - PowerShell):**
 ```powershell
-.\start_simple_demo.bat
+Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_simple_demo.bat"
 ```
 
 **Funktionen:**
@@ -28,9 +57,12 @@ Einfache Demo zur Steuerung des Roboters über MoveIt2-Schnittstelle.
 ### 2. **Safety Demo** - Menschliche Distanzüberwachung
 Demo zur Überwachung der menschlichen Nähe mit automatischer Roboter-Notabschaltung.
 
-**Start:**
+**Start (Methode 1 - Doppelklick):**
+Doppelklick auf `start_safety_demo.bat`
+
+**Start (Methode 2 - PowerShell):**
 ```powershell
-.\start_safety_demo.bat
+Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_safety_demo.bat"
 ```
 
 **Komponenten:**
@@ -57,9 +89,12 @@ ros2 topic pub /human_distance std_msgs/msg/Float32 "data: 0.5" --once
 ### 3. **Dance Demo** - 30-Sekunden Choreographie
 Vollständige Tanzchoreographie mit 6 Phasen (inspiriert von Boston Dynamics).
 
-**Start:**
+**Start (Methode 1 - Doppelklick):**
+Doppelklick auf `start_dance_demo.bat`
+
+**Start (Methode 2 - PowerShell):**
 ```powershell
-.\start_dance_demo.bat
+Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_dance_demo.bat"
 ```
 
 **Choreographie-Phasen:**
@@ -172,13 +207,26 @@ docker-compose build
 
 ---
 
-## 🚀 Schnellstart für alle Demos
+## 🚀 Schnellstart (Zusammenfassung)
 
-1. **Simple Demo starten**: Doppelklick auf `start_simple_demo.bat`
-2. **Safety Demo starten**: Doppelklick auf `start_safety_demo.bat`
-3. **Dance Demo starten**: Doppelklick auf `start_dance_demo.bat`
-4. **Foxglove öffnen**: Browser → `https://studio.foxglove.dev` → Connect zu `ws://localhost:9090`
-5. **Beenden**: `Strg+C` im Batch-Fenster
+### Reihenfolge:
+1. **Simulation starten**: Doppelklick auf `start_sim.bat` (oder PowerShell Befehl)
+2. **Warten** bis "Rosbridge ready" erscheint
+3. **Demo starten**: Doppelklick auf gewünschte Demo:
+   - `start_simple_demo.bat` - Simple MoveIt Demo
+   - `start_safety_demo.bat` - Safety Demo
+   - `start_dance_demo.bat` - Dance Demo
+4. **Visualisierung** (optional): Browser → `https://studio.foxglove.dev` → Connect zu `ws://localhost:9090`
+5. **Beenden**: `Strg+C` im jeweiligen Batch-Fenster
+
+### BAT-Dateien Speicherort:
+```
+c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\
+├── start_sim.bat              (1. Zuerst starten!)
+├── start_simple_demo.bat      (2. Dann eine Demo wählen)
+├── start_safety_demo.bat
+└── start_dance_demo.bat
+```
 
 ---
 
