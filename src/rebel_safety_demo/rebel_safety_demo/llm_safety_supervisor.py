@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-LLM Safety Supervisor Node
-Monitors human distance and controls robot safety behavior.
-Optionally integrates with external LLM via HTTP.
+LLM Sicherheits-Überwachungs-Node
+Überwacht die menschliche Entfernung und steuert das Sicherheitsverhalten des Roboters.
+Integriert optional externes LLM über HTTP.
 """
 
 import rclpy
@@ -15,27 +15,27 @@ import json
 
 class LLMSafetySupervisor(Node):
     """
-    Safety supervisor with threshold-based logic and optional LLM integration.
-    Subscribes to /human_distance and calls /rebel_safety_demo/set_mode service.
+    Sicherheitsüberwachung mit schwellenwertbasierter Logik und optionaler LLM-Integration.
+    Abonniert /human_distance und ruft den /rebel_safety_demo/set_mode Service auf.
     """
 
-    # State machine states
+    # Zustandsmaschinen-Zustände
     STATE_IDLE = 'IDLE'
     STATE_HUMAN_CLOSE = 'HUMAN_CLOSE'
     STATE_SAFE_RETRACTED = 'SAFE_RETRACTED'
 
-    # Safety thresholds (meters)
+    # Sicherheitsschwellenwerte (Meter)
     WARN_DISTANCE = 1.0
     DANGER_DISTANCE = 0.6
 
     def __init__(self):
         super().__init__('llm_safety_supervisor')
         
-        # Current state
+        # Aktueller Zustand
         self.current_state = self.STATE_IDLE
         self.last_distance = None
         
-        # LLM integration
+        # LLM-Integration
         self.llm_endpoint = os.environ.get('LLM_ENDPOINT', None)
         self.use_llm = self.llm_endpoint is not None
         
@@ -52,7 +52,7 @@ class LLMSafetySupervisor(Node):
             self.get_logger().info('LLM integration disabled (LLM_ENDPOINT not set)')
             self.get_logger().info('Using threshold-based logic only')
         
-        # Subscriber
+        # Abonnent
         self.subscription = self.create_subscription(
             Float32,
             '/human_distance',
@@ -60,11 +60,11 @@ class LLMSafetySupervisor(Node):
             10
         )
         
-        # Service client
+        # Service-Client
         self.set_mode_client = self.create_client(SetBool, '/rebel_safety_demo/set_mode')
         
-        # Wait for service
-        self.get_logger().info('Waiting for /rebel_safety_demo/set_mode service...')
+        # Auf Service warten
+        self.get_logger().info('Warte auf /rebel_safety_demo/set_mode Service...')
         while not self.set_mode_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('Service not available, waiting...')
         
@@ -74,39 +74,39 @@ class LLMSafetySupervisor(Node):
 
     def distance_callback(self, msg):
         """
-        Process incoming distance messages and trigger safety actions.
+        Eingehende Entfernungsnachrichten verarbeiten und Sicherheitsaktionen auslösen.
         
         Args:
-            msg (Float32): Distance in meters
+            msg (Float32): Entfernung in Metern
         """
         distance = msg.data
         self.last_distance = distance
         
-        # Determine desired command
+        # Gewünschten Befehl bestimmen
         if self.use_llm:
             command = self.get_llm_command(distance)
         else:
             command = self.get_threshold_command(distance)
         
-        # Execute command
+        # Befehl ausführen
         self.execute_command(command, distance)
 
     def get_threshold_command(self, distance):
         """
-        Threshold-based decision logic.
+        Schwellenwertbasierte Entscheidungslogik.
         
         Args:
-            distance (float): Current distance in meters
+            distance (float): Aktuelle Entfernung in Metern
         
         Returns:
-            str: 'HOME' or 'SAFE_RETRACT'
+            str: 'HOME' oder 'SAFE_RETRACT'
         """
         if distance <= self.DANGER_DISTANCE:
             return 'SAFE_RETRACT'
         elif distance > self.WARN_DISTANCE:
             return 'HOME'
         else:
-            # In warning zone, maintain current state
+            # In Warnzone, aktuellen Zustand beibehalten
             if self.current_state == self.STATE_SAFE_RETRACTED:
                 return 'SAFE_RETRACT'
             else:
@@ -114,23 +114,23 @@ class LLMSafetySupervisor(Node):
 
     def get_llm_command(self, distance):
         """
-        Query external LLM for decision.
-        Falls back to threshold logic on error.
+        Externes LLM für Entscheidung abfragen.
+        Fällt bei Fehler auf Schwellenwert-Logik zurück.
         
         Args:
-            distance (float): Current distance in meters
+            distance (float): Aktuelle Entfernung in Metern
         
         Returns:
-            str: 'HOME' or 'SAFE_RETRACT'
+            str: 'HOME' oder 'SAFE_RETRACT'
         """
         try:
-            # Build payload
+            # Payload erstellen
             payload = {
                 'distance_m': float(distance),
                 'state': self.current_state
             }
             
-            # Send HTTP POST
+            # HTTP POST senden
             response = self.requests.post(
                 self.llm_endpoint,
                 json=payload,
@@ -152,19 +152,19 @@ class LLMSafetySupervisor(Node):
         except Exception as e:
             self.get_logger().warn(f'LLM error: {str(e)}')
         
-        # Fallback to threshold logic
+        # Zurückfallen auf Schwellenwert-Logik
         self.get_logger().info('Falling back to threshold logic')
         return self.get_threshold_command(distance)
 
     def execute_command(self, command, distance):
         """
-        Execute the decided command by calling the set_mode service.
+        Beschlossenen Befehl durch Aufruf des set_mode Services ausführen.
         
         Args:
-            command (str): 'HOME' or 'SAFE_RETRACT'
-            distance (float): Current distance for logging
+            command (str): 'HOME' oder 'SAFE_RETRACT'
+            distance (float): Aktuelle Entfernung für Protokollierung
         """
-        # Map command to service request
+        # Befehl auf Service-Anfrage abbilden
         request = SetBool.Request()
         
         if command == 'SAFE_RETRACT':
@@ -174,35 +174,35 @@ class LLMSafetySupervisor(Node):
             request.data = False
             new_state = self.STATE_IDLE
         
-        # Only call service if state change is needed
+        # Service nur bei erforderlicher Zustandsänderung aufrufen
         if new_state != self.current_state:
             self.get_logger().info(
                 f'Distance: {distance:.2f}m | State: {self.current_state} -> {new_state} | '
                 f'Command: {command} | LLM: {self.use_llm}'
             )
             
-            # Call service asynchronously
+            # Service asynchron aufrufen
             future = self.set_mode_client.call_async(request)
             future.add_done_callback(lambda f: self.service_response_callback(f, new_state))
         else:
-            # State unchanged, just log distance occasionally
+            # Zustand unverändert, Entfernung gelegentlich protokollieren
             if hasattr(self, '_log_counter'):
                 self._log_counter += 1
             else:
                 self._log_counter = 0
             
-            if self._log_counter % 50 == 0:  # Log every ~5 seconds at 10Hz
+            if self._log_counter % 50 == 0:  # Alle ~5 Sekunden bei 10Hz protokollieren
                 self.get_logger().info(
                     f'Distance: {distance:.2f}m | State: {self.current_state} (stable)'
                 )
 
     def service_response_callback(self, future, new_state):
         """
-        Handle service response.
+        Service-Antwort verarbeiten.
         
         Args:
-            future: Service call future
-            new_state (str): Target state
+            future: Service-Aufruf Future
+            new_state (str): Zielzustand
         """
         try:
             response = future.result()

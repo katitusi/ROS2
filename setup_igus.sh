@@ -1,30 +1,30 @@
 #!/bin/bash
 set -e
 
-echo "🤖 Setting up Igus ReBeL ROS2 packages..."
+echo "🤖 Igus ReBeL ROS2 Pakete werden eingerichtet..."
 
 cd /ws/src
 
-# Clone the repository if it doesn't exist
+# Repository klonen, falls es nicht existiert
 if [ ! -d "iRC_ROS" ]; then
     git clone https://github.com/CommonplaceRobotics/iRC_ROS.git
-    echo "✅ Cloned iRC_ROS repository"
+    echo "✅ iRC_ROS Repository geklont"
 else
-    echo "⚠️ iRC_ROS repository already exists"
+    echo "⚠️ iRC_ROS Repository existiert bereits"
 fi
 
-# Install dependencies
-echo "📦 Installing dependencies..."
+# Abhängigkeiten installieren
+echo "📦 Installiere Abhängigkeiten..."
 cd /ws
 apt-get update
-# Install missing dependencies manually to ensure build success
+# Fehlende Abhängigkeiten manuell installieren, um Build-Erfolg sicherzustellen
 apt-get install -y ros-humble-control-msgs ros-humble-realtime-tools ros-humble-xacro ros-humble-launch-param-builder
 rosdep update
-# Skip warehouse_ros_mongo as it often causes installation issues and is optional for demos
+# warehouse_ros_mongo überspringen, da es oft Installationsprobleme verursacht und optional für Demos ist
 rosdep install --from-paths src --ignore-src -r -y --skip-keys "warehouse_ros_mongo"
 
-echo "🔨 Building workspace..."
+echo "🔨 Baue Workspace..."
 colcon build --symlink-install
 
-echo "✅ Setup complete! Don't forget to source the setup file:"
+echo "✅ Einrichtung abgeschlossen! Vergessen Sie nicht, die Setup-Datei zu sourcen:"
 echo "source install/setup.bash"

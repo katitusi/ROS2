@@ -1,32 +1,32 @@
-# ROS2 Project 🤖
+# ROS2 Projekt 🤖
 
-Проект на ROS2 (Robot Operating System 2) с полной поддержкой Docker.
+Projekt auf ROS2 (Robot Operating System 2) mit vollständiger Docker-Unterstützung.
 
-## 🚀 Быстрый старт
+## 🚀 Schnellstart
 
-### Docker (рекомендуется)
+### Docker (empfohlen)
 
 ```bash
-# Клонировать репозиторий
+# Repository klonen
 git clone https://github.com/katitusi/ROS2.git
 cd ROS2
 
-# Запустить demo talker/listener
+# Demo talker/listener starten
 docker-compose up talker listener
 
-# Или войти в dev-контейнер
+# Oder in Dev-Container eintreten
 docker-compose run --rm ros2-dev
 ```
 
-### Локальная установка
+### Lokale Installation
 
 ```bash
-# Требования: ROS2 Humble, Python 3.8+, colcon
+# Anforderungen: ROS2 Humble, Python 3.8+, colcon
 
-# Собрать пакеты
+# Pakete bauen
 colcon build
 
-# Активировать окружение
+# Umgebung aktivieren
 source install/setup.bash
 ```
 
@@ -34,24 +34,24 @@ source install/setup.bash
 
 ## 📦 Docker Setup
 
-### Архитектура
+### Architektur
 
-Проект использует **multi-stage Dockerfile**:
+Das Projekt verwendet ein **Multi-Stage Dockerfile**:
 
-- **base** — минимальный ROS2 образ с CycloneDDS
-- **dev** — development окружение с ccache и tools
-- **builder** — stage для сборки workspace
-- **runtime** — компактный production образ
+- **base** — minimales ROS2 Image mit CycloneDDS
+- **dev** — Entwicklungsumgebung mit ccache und tools
+- **builder** — Stage für Workspace-Build
+- **runtime** — kompaktes Production-Image
 
-### Запуск контейнеров
+### Container starten
 
-#### 1️⃣ Development контейнер (с volume)
+#### 1️⃣ Development Container (mit Volume)
 
 ```bash
 docker-compose run --rm ros2-dev
 ```
 
-Внутри контейнера:
+Im Container:
 ```bash
 cd /ws
 colcon build
@@ -61,15 +61,15 @@ ros2 run <package> <node>
 #### 2️⃣ Demo Talker/Listener
 
 ```bash
-# Запустить оба узла
+# Beide Nodes starten
 docker-compose up talker listener
 
-# Или по отдельности
+# Oder einzeln
 docker-compose up talker
 docker-compose up listener
 ```
 
-#### 3️⃣ Production runtime
+#### 3️⃣ Production Runtime
 
 ```bash
 docker-compose run --rm ros2-runtime
@@ -77,16 +77,16 @@ docker-compose run --rm ros2-runtime
 
 ---
 
-## ⚙️ Конфигурация
+## ⚙️ Konfiguration
 
 ### CycloneDDS (DDS Middleware)
 
-Проект использует **CycloneDDS** вместо Fast-DDS:
+Das Projekt verwendet **CycloneDDS** anstelle von Fast-DDS:
 
-- Конфиг: `cyclonedds.xml`
-- Поддержка multicast (Linux) и unicast (Windows/Mac)
+- Konfiguration: `cyclonedds.xml`
+- Unterstützung für Multicast (Linux) und Unicast (Windows/Mac)
 
-**Для Windows/Mac**: раскомментируйте секцию `<Peers>` в `cyclonedds.xml`:
+**Für Windows/Mac**: Auskommentierung der `<Peers>` Sektion in `cyclonedds.xml` aufheben:
 
 ```xml
 <Peers>
@@ -95,101 +95,101 @@ docker-compose run --rm ros2-runtime
 </Peers>
 ```
 
-И используйте bridge network в `docker-compose.yml`.
+Und Bridge-Netzwerk in `docker-compose.yml` verwenden.
 
-### GPU Support (NVIDIA)
+### GPU-Unterstützung (NVIDIA)
 
-Для Gazebo/RViz с GPU:
+Für Gazebo/RViz mit GPU:
 
 ```bash
-# Требуется: nvidia-docker2
+# Erforderlich: nvidia-docker2
 docker-compose run --rm ros2-dev
 ```
 
-GPU активирован через `deploy.resources.reservations` в compose.
+GPU aktiviert über `deploy.resources.reservations` in compose.
 
 ---
 
-## 🏗️ Структура проекта
+## 🏗️ Projektstruktur
 
 ```
 ROS2/
-├── src/                    # Исходный код ROS2 пакетов
-├── build/                  # Артефакты сборки (игнорируется)
-├── install/                # Установленные пакеты (игнорируется)
-├── log/                    # Логи (игнорируется)
-├── Dockerfile              # Multi-stage Docker образ
-├── docker-compose.yml      # Compose для dev/runtime
-├── cyclonedds.xml          # Конфигурация DDS
-├── .dockerignore           # Исключения для Docker build
-└── README.md               # Документация
+├── src/                    # Quellcode der ROS2-Pakete
+├── build/                  # Build-Artefakte (ignoriert)
+├── install/                # Installierte Pakete (ignoriert)
+├── log/                    # Logs (ignoriert)
+├── Dockerfile              # Multi-Stage Docker-Image
+├── docker-compose.yml      # Compose für dev/runtime
+├── cyclonedds.xml          # DDS-Konfiguration
+├── .dockerignore           # Ausschlüsse für Docker Build
+└── README.md               # Dokumentation
 ```
 
 ---
 
-## 🛠️ Полезные команды
+## 🛠️ Nützliche Befehle
 
 ### Docker
 
 ```bash
-# Собрать образы заново
+# Images neu bauen
 docker-compose build
 
-# Войти в running контейнер
+# In laufenden Container eintreten
 docker exec -it ros2-dev bash
 
-# Посмотреть логи
+# Logs anzeigen
 docker-compose logs -f talker
 
-# Очистить volumes
+# Volumes bereinigen
 docker-compose down -v
 ```
 
 ### ROS2
 
 ```bash
-# Список нод
+# Node-Liste
 ros2 node list
 
-# Список топиков
+# Topic-Liste
 ros2 topic list
 
-# Echo топика
+# Topic ausgeben
 ros2 topic echo /chatter
 
-# Информация о ноде
+# Node-Informationen
 ros2 node info /talker
 ```
 
 ---
 
-## 🌍 Multi-platform build (ARM64 + x86_64)
+## 🌍 Multi-Platform Build (ARM64 + x86_64)
 
 ```bash
-# Создать builder
+# Builder erstellen
 docker buildx create --use
 
-# Собрать для ARM64 (Jetson/RaspberryPi)
+# Für ARM64 bauen (Jetson/RaspberryPi)
 docker buildx build --platform linux/arm64 -t ros2-workspace:arm64 .
 
-# Собрать для обеих платформ
+# Für beide Plattformen bauen
 docker buildx build --platform linux/amd64,linux/arm64 -t your-registry/ros2:latest --push .
 ```
 
 ---
 
-## 📚 Дополнительные ресурсы
+## 📚 Zusätzliche Ressourcen
 
-- [ROS2 Documentation](https://docs.ros.org/en/humble/)
+- [ROS2 Dokumentation](https://docs.ros.org/en/humble/)
 - [CycloneDDS GitHub](https://github.com/eclipse-cyclonedds/cyclonedds)
-- [Docker Multi-stage Builds](https://docs.docker.com/build/building/multi-stage/)
+- [Docker Multi-Stage Builds](https://docs.docker.com/build/building/multi-stage/)
 
 ---
 
-## 🤝 Contributing
+## 🤝 Mitwirken
 
-1. Fork репозиторий
-2. Создайте feature branch (`git checkout -b feature/amazing`)
-3. Commit изменения (`git commit -m 'Add amazing feature'`)
-4. Push в branch (`git push origin feature/amazing`)
-5. Откройте Pull Request
+1. Repository forken
+2. Feature-Branch erstellen (`git checkout -b feature/amazing`)
+3. Änderungen committen (`git commit -m 'Add amazing feature'`)
+4. In Branch pushen (`git push origin feature/amazing`)
+5. Pull Request öffnen

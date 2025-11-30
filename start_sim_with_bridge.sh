@@ -1,24 +1,24 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Starting Complete Simulation Stack..."
+echo "🚀 Starte vollständigen Simulations-Stack..."
 
-# Source environment
+# Umgebung sourcen
 source /opt/ros/humble/setup.bash
 if [ -f /ws/install/setup.bash ]; then
     source /ws/install/setup.bash
 fi
 
-# Function to handle cleanup
+# Funktion zum Bereinigen
 cleanup() {
-    echo "🛑 Stopping all processes..."
+    echo "🛑 Stoppe alle Prozesse..."
     kill $(jobs -p) 2>/dev/null || true
     exit 0
 }
 trap cleanup SIGINT SIGTERM EXIT
 
-# Start rosbridge in background
-echo "🌐 Starting Rosbridge (port 9090)..."
+# Rosbridge im Hintergrund starten
+echo "🌐 Starte Rosbridge (Port 9090)..."
 ros2 run rosbridge_server rosbridge_websocket \
     --ros-args \
     -p port:=9090 \
@@ -27,20 +27,20 @@ ros2 run rosbridge_server rosbridge_websocket \
     -p use_compression:=false &
 ROSBRIDGE_PID=$!
 
-# Start rosapi in background
-echo "📡 Starting rosapi node..."
+# rosapi im Hintergrund starten
+echo "📡 Starte rosapi Node..."
 ros2 run rosapi rosapi_node &
 ROSAPI_PID=$!
 
-# Wait for rosbridge to start
+# Warten, bis Rosbridge gestartet ist
 sleep 3
-echo "✅ Rosbridge ready at ws://localhost:9090"
+echo "✅ Rosbridge bereit unter ws://localhost:9090"
 
-# Start robot simulation
-echo "🤖 Starting ReBeL Simulation..."
+# Roboter-Simulation starten
+echo "🤖 Starte ReBeL Simulation..."
 ros2 launch irc_ros_moveit_config rebel.launch.py \
     hardware_protocol:=mock_hardware \
     use_rviz:=false
 
-# This line is reached when the launch file exits
+# Diese Zeile wird erreicht, wenn die Launch-Datei beendet wird
 cleanup

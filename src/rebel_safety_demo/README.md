@@ -1,16 +1,16 @@
 # ReBeL Safety Demo
 
-Демонстрация системы безопасности для робота igus ReBeL с опциональной интеграцией LLM.
+Demonstration eines Sicherheitssystems für den igus ReBeL-Roboter mit optionaler LLM-Integration.
 
-## Описание
+## Beschreibung
 
-Пакет `rebel_safety_demo` реализует простую систему безопасности "человек приближается → робот отступает":
+Das Paket `rebel_safety_demo` implementiert ein einfaches Sicherheitssystem "Mensch nähert sich → Roboter weicht zurück":
 
-- **human_distance_publisher**: Симулирует датчик расстояния до человека (2.0м → 0.2м за 20 секунд)
-- **rebel_mover**: MoveIt-контроллер для управления позициями робота ReBeL
-- **llm_safety_supervisor**: Супервизор безопасности с пороговой логикой и опциональной LLM интеграцией
+- **human_distance_publisher**: Simuliert einen Distanzsensor zum Menschen (2,0m → 0,2m über 20 Sekunden)
+- **rebel_mover**: MoveIt-Controller zur Steuerung der ReBeL-Roboterpositionen
+- **llm_safety_supervisor**: Sicherheitssupervisor mit Schwellwertlogik und optionaler LLM-Integration
 
-## Структура пакета
+## Paketstruktur
 
 ```
 rebel_safety_demo/
@@ -29,7 +29,7 @@ rebel_safety_demo/
     └── safety_demo_real.launch.py
 ```
 
-## Сборка
+## Build
 
 ```bash
 cd /ws
@@ -37,11 +37,11 @@ colcon build --packages-select rebel_safety_demo
 source install/setup.bash
 ```
 
-## Запуск
+## Ausführung
 
-### 1. Запустите симуляцию робота
+### 1. Robotersimulation starten
 
-В первом терминале:
+Im ersten Terminal:
 
 ```bash
 docker-compose run --rm --service-ports ros2-dev bash
@@ -50,9 +50,9 @@ source install/setup.bash
 ros2 launch irc_ros_moveit_config rebel.launch.py hardware_protocol:=mock_hardware
 ```
 
-### 2. Запустите safety demo
+### 2. Safety Demo starten
 
-Во втором терминале:
+Im zweiten Terminal:
 
 ```bash
 docker-compose exec ros2-dev bash
@@ -61,40 +61,40 @@ source install/setup.bash
 ros2 launch rebel_safety_demo safety_demo_sim.launch.py
 ```
 
-## Логика работы
+## Funktionslogik
 
-### Пороги безопасности
+### Sicherheitsschwellen
 
-- **WARN_DISTANCE**: 1.0 м
-- **DANGER_DISTANCE**: 0.6 м
+- **WARN_DISTANCE**: 1,0 m
+- **DANGER_DISTANCE**: 0,6 m
 
-### Поведение
+### Verhalten
 
-- Расстояние > 1.0 м → робот в позиции HOME (нейтральная поза)
-- Расстояние ≤ 0.6 м → робот в позиции SAFE_RETRACT (отступает назад)
+- Distanz > 1,0 m → Roboter in Position HOME (neutrale Pose)
+- Distanz ≤ 0,6 m → Roboter in Position SAFE_RETRACT (weicht zurück)
 
-### Позиции робота
+### Roboterpositionen
 
-- **HOME**: `[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]` - нейтральная поза
-- **SAFE_RETRACT**: `[0.0, -0.5, 0.8, 0.0, 0.3, 0.0]` - отступает назад
+- **HOME**: `[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]` - neutrale Pose
+- **SAFE_RETRACT**: `[0.0, -0.5, 0.8, 0.0, 0.3, 0.0]` - weicht zurück
 
-### Настройки безопасности
+### Sicherheitseinstellungen
 
-- Скорость: 10% от максимальной
-- Ускорение: 10% от максимального
+- Geschwindigkeit: 10% der Maximalgeschwindigkeit
+- Beschleunigung: 10% der Maximalbeschleunigung
 
-## Интеграция LLM (опционально)
+## LLM-Integration (optional)
 
-Для подключения внешнего LLM установите переменную окружения:
+Um eine externe LLM anzubinden, setzen Sie die Umgebungsvariable:
 
 ```bash
 export LLM_ENDPOINT="http://localhost:5000/llm/decide"
 ros2 launch rebel_safety_demo safety_demo_sim.launch.py
 ```
 
-### Формат запроса к LLM
+### Format der Anfrage an die LLM
 
-POST запрос:
+POST-Anfrage:
 ```json
 {
   "distance_m": 0.8,
@@ -102,7 +102,7 @@ POST запрос:
 }
 ```
 
-### Ожидаемый ответ от LLM
+### Erwartete Antwort von der LLM
 
 ```json
 {
@@ -110,7 +110,7 @@ POST запрос:
 }
 ```
 
-или
+oder
 
 ```json
 {
@@ -118,64 +118,64 @@ POST запрос:
 }
 ```
 
-### Возможные варианты LLM endpoint
+### Mögliche LLM-Endpoint-Varianten
 
-- Telegram-бот
-- Локальный LLaMA
-- OpenAI API прокси
-- Любой HTTP сервис
+- Telegram-Bot
+- Lokale LLaMA
+- OpenAI API Proxy
+- Beliebiger HTTP-Service
 
-## Топики и сервисы
+## Topics und Services
 
-### Топики
+### Topics
 
-- `/human_distance` (`std_msgs/Float32`) - расстояние до человека в метрах
+- `/human_distance` (`std_msgs/Float32`) - Distanz zum Menschen in Metern
 
-### Сервисы
+### Services
 
-- `/rebel_safety_demo/set_mode` (`std_srvs/SetBool`) - управление режимом робота
+- `/rebel_safety_demo/set_mode` (`std_srvs/SetBool`) - Steuerung des Robotermodus
   - `data=true` → SAFE_RETRACT
   - `data=false` → HOME
 
-## Запуск на реальном роботе
+## Ausführung auf echtem Roboter
 
-⚠️ **ВНИМАНИЕ**: Для работы с реальным роботом!
+⚠️ **ACHTUNG**: Für Arbeit mit echtem Roboter!
 
 ```bash
-# Запустите hardware interface
+# Hardware-Interface starten
 ros2 launch irc_ros_bringup rebel.launch.py hardware_protocol:=cprcanv2
 
-# В другом терминале запустите demo
+# In anderem Terminal Demo starten
 ros2 launch rebel_safety_demo safety_demo_real.launch.py
 ```
 
-## Тестирование
+## Testen
 
-### Просмотр расстояния
+### Distanz anzeigen
 
 ```bash
 ros2 topic echo /human_distance
 ```
 
-### Ручной вызов сервиса
+### Service manuell aufrufen
 
 ```bash
-# Переместить в SAFE_RETRACT
+# Nach SAFE_RETRACT bewegen
 ros2 service call /rebel_safety_demo/set_mode std_srvs/srv/SetBool "{data: true}"
 
-# Переместить в HOME
+# Nach HOME bewegen
 ros2 service call /rebel_safety_demo/set_mode std_srvs/srv/SetBool "{data: false}"
 ```
 
-## Зависимости
+## Abhängigkeiten
 
 - `rclpy`
 - `std_msgs`
 - `std_srvs`
 - `moveit_commander`
 - `moveit_ros_planning_interface`
-- `requests` (для LLM интеграции, опционально)
+- `requests` (für LLM-Integration, optional)
 
-## Лицензия
+## Lizenz
 
 Apache-2.0

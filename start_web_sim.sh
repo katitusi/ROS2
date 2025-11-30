@@ -1,48 +1,48 @@
 #!/bin/bash
 set -e
 
-# Function to handle cleanup on exit
+# Funktion zum Bereinigen beim Beenden
 cleanup() {
-    echo "Stopping processes..."
+    echo "Stoppe Prozesse..."
     kill $(jobs -p) 2>/dev/null || true
 }
 trap cleanup EXIT
 
-echo "🚀 Starting Igus ReBeL Simulation with Web Visualization..."
+echo "🚀 Starte Igus ReBeL Simulation mit Web-Visualisierung..."
 
-# Source ROS2 environment
+# ROS2 Umgebung sourcen
 source /opt/ros/humble/setup.bash
 if [ -f /ws/install/setup.bash ]; then
     source /ws/install/setup.bash
 fi
 
-# 1. Start Rosbridge Server in the background
-echo "🌐 Starting Rosbridge Server (ws://0.0.0.0:9090)..."
-# Launch with explicit parameters to fix connection drops
-# Using tornado backend which is often more stable than the default
+# 1. Rosbridge Server im Hintergrund starten
+echo "🌐 Starte Rosbridge Server (ws://0.0.0.0:9090)..."
+# Mit expliziten Parametern starten, um Verbindungsabbrüche zu beheben
+# Tornado-Backend verwenden, das oft stabiler ist als Standard
 ros2 run rosbridge_server rosbridge_websocket --ros-args -p port:=9090 -p address:=0.0.0.0 -p unregister_timeout:=9999999.0 -p use_compression:=false &
 PID_BRIDGE=$!
 
-# Start rosapi node (required for Foxglove to list topics/services)
-echo "ℹ️ Starting rosapi node..."
+# rosapi Node starten (erforderlich für Foxglove um Topics/Services aufzulisten)
+echo "ℹ️ Starte rosapi Node..."
 ros2 run rosapi rosapi_node &
 PID_API=$!
 
-# Wait a moment for bridge to start
+# Kurz warten, bis Bridge gestartet ist
 sleep 2
 
-# 2. Start the Robot Simulation
-echo "🤖 Starting Igus ReBeL Simulation (Mock Hardware)..."
-# We use 'ros2 launch' directly. 
-# Note: We don't need 'rviz' here if we are using Foxglove, but the launch file might start it.
-# We can try to disable rviz if the launch file supports it, but rebel.launch.py seems to have 'use_rviz' arg.
+# 2. Roboter-Simulation starten
+echo "🤖 Starte Igus ReBeL Simulation (Mock Hardware)..."
+# Wir verwenden 'ros2 launch' direkt.
+# Hinweis: Wir brauchen 'rviz' hier nicht, wenn wir Foxglove verwenden, aber die Launch-Datei könnte es starten.
+# Wir können versuchen, rviz zu deaktivieren, wenn die Launch-Datei es unterstützt, rebel.launch.py scheint 'use_rviz' Argument zu haben.
 ros2 launch irc_ros_moveit_config rebel.launch.py hardware_protocol:=mock_hardware use_rviz:=false &
 PID_SIM=$!
 
-echo "✅ System is running!"
-echo "👉 Open https://studio.foxglove.dev in your browser."
-echo "👉 Connect to 'Rosbridge' at ws://localhost:9090"
-echo "Press Ctrl+C to stop."
+echo "✅ System läuft!"
+echo "👉 Öffnen Sie https://studio.foxglove.dev in Ihrem Browser."
+echo "👉 Verbinden Sie sich mit 'Rosbridge' unter ws://localhost:9090"
+echo "Drücken Sie Strg+C zum Stoppen."
 
-# Wait for processes
+# Auf Prozesse warten
 wait $PID_SIM $PID_BRIDGE $PID_API

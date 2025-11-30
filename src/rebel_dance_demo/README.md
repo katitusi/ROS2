@@ -1,45 +1,45 @@
 # ReBeL Dance Demo 🕺
 
-30-секундная танцевальная хореография для робота igus ReBeL, вдохновленная танцами роботов Boston Dynamics и промышленных манипуляторов.
+30-sekündige Tanzchoreographie für den igus ReBeL-Roboter, inspiriert von Tänzen der Boston Dynamics-Roboter und industrieller Manipulatoren.
 
-## Описание
+## Beschreibung
 
-Пакет `rebel_dance_demo` реализует впечатляющий 30-секундный танец для 6-DOF робота-манипулятора ReBeL с плавными волновыми движениями, вращениями и динамичными комбинациями.
+Das Paket `rebel_dance_demo` implementiert einen beeindruckenden 30-sekündigen Tanz für den 6-DOF-Robotermanipulator ReBeL mit fließenden Wellenbewegungen, Drehungen und dynamischen Kombinationen.
 
-## Структура танца
+## Tanzstruktur
 
-### 🎭 Фаза 1: Приветствие (0-2 сек)
-- Начальная поза
-- Плавный взмах "руки" вверх
-- Приветствие аудитории
+### 🎭 Phase 1: Begrüßung (0-2 Sek)
+- Ausgangsposition
+- Fließendes Winken nach oben
+- Begrüßung des Publikums
 
-### 🌊 Фаза 2: Волновые движения (2-8 сек)
-- Синусоидальные движения через все суставы
-- Эффект "волны" от основания к кончику
-- 3 полных цикла плавных переходов
+### 🌊 Phase 2: Wellenbewegungen (2-8 Sek)
+- Sinusförmige Bewegungen durch alle Gelenke
+- "Wellen"-Effekt von der Basis zur Spitze
+- 3 vollständige Zyklen fließender Übergänge
 
-### ∞ Фаза 3: Восьмёрка (8-14 сек)
-- Эффектор рисует восьмерку в пространстве
-- Плавные дуги в воздухе
-- 2 полных цикла восьмерки
+### ∞ Phase 3: Achterschleife (8-14 Sek)
+- Endeffektor zeichnet eine Acht im Raum
+- Fließende Bögen in der Luft
+- 2 vollständige Achterzyklen
 
-### 🌀 Фаза 4: Скручивание (14-20 сек)
-- Последовательное вращение суставов
-- Эффект "скручивания" робота
-- Поочередные движения суставов 1, 4, 6
+### 🌀 Phase 4: Verdrehung (14-20 Sek)
+- Sequenzielle Rotation der Gelenke
+- "Verdreh"-Effekt des Roboters
+- Abwechselnde Bewegungen der Gelenke 1, 4, 6
 
-### 💥 Фаза 5: Большой финал (20-28 сек)
-- Серия быстрых динамичных поз
-- 5 эффектных позиций
-- Увеличенная скорость до 50%
-- Дополнительные "украшения"
+### 💥 Phase 5: Großes Finale (20-28 Sek)
+- Serie schneller dynamischer Posen
+- 5 effektvolle Positionen
+- Erhöhte Geschwindigkeit bis zu 50%
+- Zusätzliche "Verzierungen"
 
-### 🙇 Фаза 6: Поклон (28-30 сек)
-- Возврат в нейтральную позу
-- Поклон "публике"
-- Финальное положение
+### 🙇 Phase 6: Verbeugung (28-30 Sek)
+- Rückkehr zur neutralen Pose
+- Verbeugung vor dem "Publikum"
+- Endposition
 
-## Сборка
+## Build
 
 ```bash
 cd /ws
@@ -47,11 +47,11 @@ colcon build --packages-select rebel_dance_demo
 source install/setup.bash
 ```
 
-## Запуск
+## Ausführung
 
-### Симуляция
+### Simulation
 
-**Терминал 1** - Запустите симуляцию робота:
+**Terminal 1** - Robotersimulation starten:
 ```bash
 docker-compose run --rm --service-ports ros2-dev bash
 cd /ws
@@ -59,7 +59,7 @@ source install/setup.bash
 ros2 launch irc_ros_moveit_config rebel.launch.py hardware_protocol:=mock_hardware
 ```
 
-**Терминал 2** - Запустите танец:
+**Terminal 2** - Tanz starten:
 ```bash
 docker-compose exec ros2-dev bash
 cd /ws
@@ -67,144 +67,144 @@ source install/setup.bash
 ros2 launch rebel_dance_demo dance_demo_sim.launch.py
 ```
 
-### Реальный робот
+### Echter Roboter
 
-⚠️ **ВНИМАНИЕ**: Убедитесь, что рабочее пространство свободно!
+⚠️ **ACHTUNG**: Stellen Sie sicher, dass der Arbeitsbereich frei ist!
 
-**Терминал 1** - Запустите hardware interface:
+**Terminal 1** - Hardware-Interface starten:
 ```bash
 ros2 launch irc_ros_bringup rebel.launch.py hardware_protocol:=cprcanv2
 ```
 
-**Терминал 2** - Запустите танец:
+**Terminal 2** - Tanz starten:
 ```bash
 ros2 launch rebel_dance_demo dance_demo_real.launch.py
 ```
 
-## Ручное управление
+## Manuelle Steuerung
 
-Запустить танец через сервис:
+Tanz über Service starten:
 ```bash
 ros2 service call /rebel_dance_demo/start_dance std_srvs/srv/Trigger
 ```
 
-## Характеристики
+## Merkmale
 
-- **Продолжительность**: ~30 секунд
-- **Количество фаз**: 6
-- **Количество поз**: 15 уникальных позиций
-- **Скорость (симуляция)**: 30-50% от максимальной
-- **Скорость (реальный робот)**: 20-40% от максимальной
-- **Плавность**: Интерполяция между всеми позами
+- **Dauer**: ~30 Sekunden
+- **Anzahl der Phasen**: 6
+- **Anzahl der Posen**: 15 einzigartige Positionen
+- **Geschwindigkeit (Simulation)**: 30-50% der Maximalgeschwindigkeit
+- **Geschwindigkeit (Echter Roboter)**: 20-40% der Maximalgeschwindigkeit
+- **Flüssigkeit**: Interpolation zwischen allen Posen
 
-## Технические детали
+## Technische Details
 
-### Хореографические позы
+### Choreographische Posen
 
-Все позы определены в радианах для 6 суставов:
+Alle Posen sind in Radiant für 6 Gelenke definiert:
 
 ```python
-neutral = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]           # Нейтраль
-greeting = [0.0, -0.8, 1.2, 0.0, 0.5, 0.0]         # Приветствие
-wave_1 = [0.3, -0.3, 0.6, 0.2, 0.4, 0.5]           # Волна 1
-twist_1 = [1.0, -0.4, 0.7, 0.0, 0.3, 0.0]          # Скручивание 1
-finale_1 = [0.5, -0.9, 1.3, 0.8, 0.6, 1.0]         # Финал 1
-bow = [0.0, 0.3, -0.3, 0.0, -0.2, 0.0]             # Поклон
-# ... и другие
+neutral = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]           # Neutral
+greeting = [0.0, -0.8, 1.2, 0.0, 0.5, 0.0]         # Begrüßung
+wave_1 = [0.3, -0.3, 0.6, 0.2, 0.4, 0.5]           # Welle 1
+twist_1 = [1.0, -0.4, 0.7, 0.0, 0.3, 0.0]          # Verdrehung 1
+finale_1 = [0.5, -0.9, 1.3, 0.8, 0.6, 1.0]         # Finale 1
+bow = [0.0, 0.3, -0.3, 0.0, -0.2, 0.0]             # Verbeugung
+# ... und weitere
 ```
 
-### Настройки безопасности
+### Sicherheitseinstellungen
 
-**Для симуляции:**
-- Скорость: 30% (плавность)
-- Ускорение: 30%
-- Финальная часть: до 50%
+**Für Simulation:**
+- Geschwindigkeit: 30% (Flüssigkeit)
+- Beschleunigung: 30%
+- Finale-Teil: bis zu 50%
 
-**Для реального робота:**
-- Скорость: 20% (безопасность)
-- Ускорение: 20%
-- Финальная часть: до 40%
+**Für echten Roboter:**
+- Geschwindigkeit: 20% (Sicherheit)
+- Beschleunigung: 20%
+- Finale-Teil: bis zu 40%
 
-## Визуализация
+## Visualisierung
 
 ### RViz
 
-Для наблюдения за танцем в RViz:
+Um den Tanz in RViz zu beobachten:
 ```bash
 ros2 launch irc_ros_moveit_config moveit_rviz.launch.py
 ```
 
 ### Foxglove Studio
 
-1. Откройте [https://studio.foxglove.dev](https://studio.foxglove.dev)
-2. Подключитесь к `ws://localhost:9090` (rosbridge)
-3. Добавьте 3D панель
-4. Включите Robot Model
+1. Öffnen Sie [https://studio.foxglove.dev](https://studio.foxglove.dev)
+2. Verbinden Sie sich mit `ws://localhost:9090` (rosbridge)
+3. Fügen Sie ein 3D-Panel hinzu
+4. Aktivieren Sie Robot Model
 
 ## API
 
-### Сервисы
+### Services
 
 - `/rebel_dance_demo/start_dance` (`std_srvs/srv/Trigger`)
-  - Запускает танцевальную последовательность
-  - Возвращает успех/неудачу и сообщение
+  - Startet die Tanzsequenz
+  - Gibt Erfolg/Misserfolg und Nachricht zurück
 
-### Методы (внутренние)
+### Methoden (intern)
 
-- `perform_dance()` - выполняет полную последовательность
-- `move_to_pose(joints, velocity, accel)` - движение к позе
-- `interpolate_poses(start, end, steps)` - интерполяция между позами
-- `log_progress(start_time)` - логирование прогресса
+- `perform_dance()` - führt die vollständige Sequenz aus
+- `move_to_pose(joints, velocity, accel)` - Bewegung zur Pose
+- `interpolate_poses(start, end, steps)` - Interpolation zwischen Posen
+- `log_progress(start_time)` - Protokollierung des Fortschritts
 
-## Особенности
+## Besonderheiten
 
-✨ **Плавность** - Все движения плавные без рывков  
-🎯 **Точность** - Все позы тщательно выверены  
-⚡ **Динамика** - Сочетание медленных и быстрых движений  
-🔄 **Повторяемость** - Танец идентичен каждый раз  
-🛡️ **Безопасность** - Ограниченные скорости для реального робота  
+✨ **Flüssigkeit** - Alle Bewegungen sind fließend ohne Ruckeln  
+🎯 **Präzision** - Alle Posen sind sorgfältig abgestimmt  
+⚡ **Dynamik** - Kombination aus langsamen und schnellen Bewegungen  
+🔄 **Wiederholbarkeit** - Tanz ist jedes Mal identisch  
+🛡️ **Sicherheit** - Begrenzte Geschwindigkeiten für echten Roboter  
 
-## Вдохновение
+## Inspiration
 
-Танец вдохновлен:
-- Танцами роботов Boston Dynamics (Spot, Atlas)
-- Хореографиями промышленных манипуляторов ABB и KUKA
-- Классическими танцевальными движениями (волны, восьмёрки, вращения)
+Der Tanz ist inspiriert von:
+- Tänzen der Boston Dynamics-Roboter (Spot, Atlas)
+- Choreographien von ABB- und KUKA-Industriemanipulatoren
+- Klassischen Tanzbewegungen (Wellen, Achter, Drehungen)
 
-## Кастомизация
+## Anpassung
 
-### Изменение скорости
+### Geschwindigkeit ändern
 
-В файле `rebel_dancer.py` измените:
+In der Datei `rebel_dancer.py` ändern:
 ```python
-self.default_velocity = 0.5      # Быстрее (50%)
-self.default_acceleration = 0.5  # Быстрее разгон
+self.default_velocity = 0.5      # Schneller (50%)
+self.default_acceleration = 0.5  # Schnellere Beschleunigung
 ```
 
-### Добавление своих поз
+### Eigene Posen hinzufügen
 
-Добавьте в словарь `self.poses`:
+Im Wörterbuch `self.poses` hinzufügen:
 ```python
 'my_pose': [joint1, joint2, joint3, joint4, joint5, joint6],
 ```
 
-И используйте в последовательности:
+Und in der Sequenz verwenden:
 ```python
 self.move_to_pose(self.poses['my_pose'])
 ```
 
-### Изменение последовательности
+### Sequenz ändern
 
-Измените порядок фаз в методе `perform_dance()`.
+Ändern Sie die Reihenfolge der Phasen in der Methode `perform_dance()`.
 
-## Требования
+## Anforderungen
 
 - ROS 2 Humble
 - MoveIt2
-- igus ReBeL robot (симуляция или реальный)
-- iRC_ROS пакеты
+- igus ReBeL-Roboter (Simulation oder echt)
+- iRC_ROS-Pakete
 
-## Зависимости
+## Abhängigkeiten
 
 - `rclpy`
 - `std_srvs`
@@ -212,49 +212,49 @@ self.move_to_pose(self.poses['my_pose'])
 - `moveit_ros_planning_interface`
 - `geometry_msgs`
 
-## Устранение неполадок
+## Fehlerbehebung
 
-### Робот не двигается
+### Roboter bewegt sich nicht
 
-Проверьте, что симуляция/hardware interface запущены:
+Prüfen Sie, ob Simulation/Hardware-Interface läuft:
 ```bash
 ros2 topic list | grep joint
 ```
 
-### Танец прерывается
+### Tanz wird unterbrochen
 
-- Проверьте, что все позы достижимы
-- Уменьшите скорость
-- Проверьте логи на ошибки планирования
+- Prüfen Sie, ob alle Posen erreichbar sind
+- Reduzieren Sie die Geschwindigkeit
+- Prüfen Sie die Logs auf Planungsfehler
 
-### Движения слишком быстрые/медленные
+### Bewegungen zu schnell/langsam
 
-Измените `self.default_velocity` в коде.
+Ändern Sie `self.default_velocity` im Code.
 
-## Безопасность для реального робота
+## Sicherheit für echten Roboter
 
-⚠️ **ОБЯЗАТЕЛЬНО:**
-- Свободное рабочее пространство (минимум 1.5м радиус)
-- Доступная кнопка аварийного останова
-- Наблюдатель рядом с роботом
-- Первый запуск на минимальной скорости (10-20%)
-- Проверка траекторий в симуляции перед реальным роботом
+⚠️ **PFLICHT:**
+- Freier Arbeitsbereich (mindestens 1,5m Radius)
+- Zugänglicher Not-Aus-Knopf
+- Beobachter neben dem Roboter
+- Erster Lauf mit minimaler Geschwindigkeit (10-20%)
+- Überprüfung der Trajektorien in der Simulation vor dem echten Roboter
 
-## Производительность
+## Leistung
 
-- Планирование траектории: ~0.5-2 сек на позу
-- Общее время выполнения: ~30-35 секунд
-- Загрузка CPU: умеренная
-- Загрузка памяти: низкая
+- Trajektorienplanung: ~0,5-2 Sek pro Pose
+- Gesamtausführungszeit: ~30-35 Sekunden
+- CPU-Auslastung: moderat
+- Speicherauslastung: gering
 
-## Лицензия
+## Lizenz
 
 Apache-2.0
 
-## Автор
+## Autor
 
 ROS2 Developer
 
 ---
 
-**Наслаждайтесь танцем! 🎉🤖💃**
+**Viel Spaß beim Tanzen! 🎉🤖💃**

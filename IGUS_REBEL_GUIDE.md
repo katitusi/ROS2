@@ -1,61 +1,61 @@
-# 🤖 Igus ReBeL Simulation Guide
+# 🤖 Igus ReBeL Simulationsleitfaden
 
-Этот гайд поможет вам запустить симуляцию робота Igus ReBeL 6DOF в Docker.
+Dieser Leitfaden hilft Ihnen, die Simulation des Igus ReBeL 6DOF-Roboters in Docker zu starten.
 
-## 1. Подготовка (Windows)
+## 1. Vorbereitung (Windows)
 
-Для запуска графических приложений (RViz, Gazebo) из Docker на Windows, вам нужен X Server.
+Für die Ausführung grafischer Anwendungen (RViz, Gazebo) aus Docker unter Windows benötigen Sie einen X-Server.
 
-1. **Скачайте и установите [VcXsrv](https://sourceforge.net/projects/vcxsrv/)**.
-2. **Запустите XLaunch** (идет вместе с VcXsrv) со следующими настройками:
+1. **Laden Sie [VcXsrv](https://sourceforge.net/projects/vcxsrv/) herunter und installieren Sie es**.
+2. **Starten Sie XLaunch** (wird mit VcXsrv mitgeliefert) mit folgenden Einstellungen:
    - **Display settings:** Multiple windows
    - **Client startup:** Start no client
-   - **Extra settings:** ✅ **Disable access control** (Обязательно поставьте галочку!)
-   - Нажмите Finish.
+   - **Extra settings:** ✅ **Disable access control** (Unbedingt aktivieren!)
+   - Klicken Sie auf Finish.
 
-## 2. Установка пакетов робота
+## 2. Installation der Roboterpakete
 
-Мы подготовили скрипт для автоматической установки.
+Wir haben ein Skript für die automatische Installation vorbereitet.
 
-1. Откройте PowerShell.
-2. Загрузите команды и запустите установку:
+1. Öffnen Sie PowerShell.
+2. Laden Sie die Befehle und starten Sie die Installation:
 
 ```powershell
 . .\ros2-docker.ps1
-Build-ROS2          # Пересобрать образ с поддержкой GUI (займет время)
-Setup-IgusRebel     # Скачать пакеты и собрать workspace
+Build-ROS2          # Image mit GUI-Unterstützung neu bauen (dauert eine Weile)
+Setup-IgusRebel     # Pakete herunterladen und Workspace bauen
 ```
 
-## 3. Запуск симуляции
+## 3. Simulation starten
 
-Теперь можно запускать демо.
+Jetzt können Sie die Demo starten.
 
-1. Запустите dev контейнер:
+1. Starten Sie den Dev-Container:
    ```powershell
    Start-ROS2Dev
    ```
 
-2. Внутри контейнера запустите MoveIt демо:
+2. Starten Sie im Container die MoveIt-Demo:
    ```bash
    ros2 launch irc_ros_moveit_config demo.launch.py
    ```
 
-Если все настроено правильно, должно открыться окно RViz с моделью робота, где вы сможете планировать движения.
+Wenn alles korrekt konfiguriert ist, sollte sich ein RViz-Fenster mit dem Robotermodell öffnen, in dem Sie Bewegungen planen können.
 
 ## 🛠️ Troubleshooting
 
-### Ошибка: "Can't open display"
-Если RViz не открывается:
-1. Убедитесь, что VcXsrv запущен.
-2. Убедитесь, что галочка "Disable access control" была включена.
-3. Попробуйте узнать свой IP адрес (команда `ipconfig` в PowerShell, ищите адаптер WSL или Ethernet) и установить переменную DISPLAY вручную перед запуском контейнера:
+### Fehler: "Can't open display"
+Wenn sich RViz nicht öffnet:
+1. Stellen Sie sicher, dass VcXsrv läuft.
+2. Stellen Sie sicher, dass die Option "Disable access control" aktiviert wurde.
+3. Versuchen Sie, Ihre IP-Adresse herauszufinden (Befehl `ipconfig` in PowerShell, suchen Sie nach dem WSL- oder Ethernet-Adapter) und setzen Sie die DISPLAY-Variable manuell, bevor Sie den Container starten:
    ```powershell
-   $env:DISPLAY="ВАШ_IP:0.0"
+   $env:DISPLAY="IHRE_IP:0.0"
    Start-ROS2Dev
    ```
 
-### Ошибка сборки
-Если `Setup-IgusRebel` падает с ошибкой, попробуйте зайти в контейнер и собрать вручную:
+### Build-Fehler
+Wenn `Setup-IgusRebel` mit einem Fehler abbricht, versuchen Sie, in den Container zu gehen und manuell zu bauen:
 ```bash
 colcon build --packages-select irc_ros_moveit_config irc_ros_description
 ```

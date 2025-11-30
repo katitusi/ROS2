@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-ReBeL Dancer Node
-30-second dance choreography for igus ReBeL robot.
-Inspired by robot dances from Boston Dynamics and industrial manipulator choreographies.
+ReBeL Tänzer Node
+30-sekündige Tanzchoreographie für den igus ReBeL Roboter.
+Inspiriert von Robotertänzen von Boston Dynamics und industriellen Manipulator-Choreographien.
 """
 
 import rclpy
@@ -15,14 +15,14 @@ from threading import Thread
 
 class RebelDancer(Node):
     """
-    Choreographic dance controller for igus ReBeL robot.
-    Performs a 30-second dance routine with various movement patterns.
+    Choreographischer Tanz-Controller für den igus ReBeL Roboter.
+    Führt eine 30-sekündige Tanzroutine mit verschiedenen Bewegungsmustern aus.
     """
 
     def __init__(self):
         super().__init__('rebel_dancer')
         
-        # Joint names for igus ReBeL 6DOF (matching /joint_states topic)
+        # Gelenknamen für igus ReBeL 6DOF (passend zum /joint_states Topic)
         joint_names = [
             'joint1',
             'joint2', 
@@ -32,7 +32,7 @@ class RebelDancer(Node):
             'joint6'
         ]
         
-        # Initialize MoveIt2 interface
+        # MoveIt2 Schnittstelle initialisieren
         self.moveit2 = MoveIt2(
             node=self,
             joint_names=joint_names,
@@ -41,44 +41,44 @@ class RebelDancer(Node):
             group_name='rebel_6dof'
         )
         
-        # Configure velocity and acceleration scaling (smooth dancing)
-        self.default_velocity = 1.0  # 100% speed (MAXIMUM - 5x faster than original)
-        self.default_acceleration = 1.0  # 100% accel (MAXIMUM)
+        # Geschwindigkeits- und Beschleunigungsskalierung konfigurieren (flüssiges Tanzen)
+        self.default_velocity = 1.0  # 100% Geschwindigkeit (MAXIMUM - 5x schneller als Original)
+        self.default_acceleration = 1.0  # 100% Beschleunigung (MAXIMUM)
         
-        # Start MoveIt2 in a separate thread
+        # MoveIt2 in separatem Thread starten
         self.executor_thread = Thread(target=self._spin_moveit2, daemon=True)
         self.executor_thread.start()
         
-        # Define choreography poses (6 joint values in radians)
+        # Choreographie-Posen definieren (6 Gelenkwerte in Radiant)
         self.poses = {
             'neutral': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             'greeting': [0.0, -0.8, 1.2, 0.0, 0.5, 0.0],
             
-            # Wave motion poses
+            # Wellen-Bewegungsposen
             'wave_1': [0.3, -0.3, 0.6, 0.2, 0.4, 0.5],
             'wave_2': [-0.3, -0.5, 0.8, -0.2, 0.3, -0.5],
             'wave_3': [0.0, -0.4, 0.7, 0.0, 0.35, 0.0],
             
-            # Twist poses
+            # Drehposen
             'twist_1': [1.0, -0.4, 0.7, 0.0, 0.3, 0.0],
             'twist_2': [1.0, -0.4, 0.7, 1.2, 0.3, 0.0],
             'twist_3': [1.0, -0.4, 0.7, 1.2, 0.3, 1.5],
             'twist_4': [1.0, -0.4, 0.7, 0.0, 0.3, 1.5],
             
-            # Finale poses (dynamic)
+            # Finale-Posen (dynamisch)
             'finale_1': [0.5, -0.9, 1.3, 0.8, 0.6, 1.0],
             'finale_2': [-0.5, -0.3, 0.4, -0.8, 0.2, -1.0],
             'finale_3': [0.8, -0.7, 1.0, 0.5, 0.8, 0.5],
             'finale_4': [-0.8, -0.5, 0.8, -0.5, 0.4, -0.5],
             'finale_5': [0.0, -0.6, 0.9, 0.0, 0.5, 0.0],
             
-            # Bow pose
+            # Verbeugungspose
             'bow': [0.0, 0.3, -0.3, 0.0, -0.2, 0.0],
         }
         
         self.is_dancing = False
         
-        # Create service to trigger dance
+        # Service zum Auslösen des Tanzes erstellen
         self.service = self.create_service(
             Trigger,
             '/rebel_dance_demo/start_dance',
@@ -92,13 +92,13 @@ class RebelDancer(Node):
         self.get_logger().info('Call the service to start the 30-second dance! 🕺')
 
     def _spin_moveit2(self):
-        """Spin MoveIt2 in a separate thread."""
-        # MoveIt2 doesn't need spinning, it's not a node
+        """MoveIt2 in separatem Thread ausführen."""
+        # MoveIt2 benötigt kein Spinning, es ist keine Node
         pass
 
     def start_dance_callback(self, request, response):
         """
-        Service callback to start the dance routine.
+        Service-Callback zum Starten der Tanzroutine.
         """
         if self.is_dancing:
             response.success = False
@@ -120,17 +120,17 @@ class RebelDancer(Node):
 
     def move_to_pose(self, joint_values, velocity_scale=None, acceleration_scale=None):
         """
-        Move to a specific joint configuration.
+        Zu einer spezifischen Gelenkkonfiguration bewegen.
         
         Args:
-            joint_values: List of 6 joint angles in radians
-            velocity_scale: Override default velocity (0.0-1.0)
-            acceleration_scale: Override default acceleration (0.0-1.0)
+            joint_values: Liste von 6 Gelenkwinkeln in Radiant
+            velocity_scale: Standardgeschwindigkeit überschreiben (0.0-1.0)
+            acceleration_scale: Standardbeschleunigung überschreiben (0.0-1.0)
         
         Returns:
-            bool: Success status
+            bool: Erfolgsstatus
         """
-        # Set velocity and acceleration if provided
+        # Geschwindigkeit und Beschleunigung setzen, falls angegeben
         if velocity_scale is not None:
             self.moveit2.max_velocity = velocity_scale
         else:
@@ -141,22 +141,22 @@ class RebelDancer(Node):
         else:
             self.moveit2.max_acceleration = self.default_acceleration
         
-        # Move to joint configuration
+        # Zur Gelenkkonfiguration bewegen
         self.moveit2.move_to_configuration(joint_positions=joint_values)
         self.moveit2.wait_until_executed()
         return True
 
     def interpolate_poses(self, start_pose, end_pose, steps):
         """
-        Create interpolated poses between start and end.
+        Interpolierte Posen zwischen Start und Ende erstellen.
         
         Args:
-            start_pose: Starting joint configuration
-            end_pose: Ending joint configuration
-            steps: Number of intermediate steps
+            start_pose: Start-Gelenkkonfiguration
+            end_pose: End-Gelenkkonfiguration
+            steps: Anzahl der Zwischenschritte
         
         Returns:
-            List of interpolated poses
+            Liste interpolierter Posen
         """
         interpolated = []
         for i in range(steps + 1):
@@ -167,66 +167,66 @@ class RebelDancer(Node):
 
     def perform_dance(self):
         """
-        Execute the complete 30-second dance routine.
+        Die komplette 30-sekündige Tanzroutine ausführen.
         """
         self.is_dancing = True
         start_time = time.time()
         
         try:
-            # ========== Phase 1: Opening (0-0.4 sec) ==========
-            self.get_logger().info('🎭 Phase 1: Opening - Greeting (0-0.4s)')
+            # ========== Phase 1: Eröffnung (0-0.4 Sek) ==========
+            self.get_logger().info('🎭 Phase 1: Eröffnung - Begrüßung (0-0.4s)')
             self.move_to_pose(self.poses['neutral'], velocity_scale=1.0)
             time.sleep(0.1)
             self.move_to_pose(self.poses['greeting'], velocity_scale=1.0)
             time.sleep(0.06)
             self.log_progress(start_time)
             
-            # ========== Phase 2: Wave Motion (0.4-1.6 sec) ==========
-            self.get_logger().info('🌊 Phase 2: Wave Motion (0.4-1.6s)')
+            # ========== Phase 2: Wellenbewegung (0.4-1.6 Sek) ==========
+            self.get_logger().info('🌊 Phase 2: Wellenbewegung (0.4-1.6s)')
             wave_sequence = ['wave_1', 'wave_2', 'wave_3', 'wave_2', 'wave_1', 'neutral']
             for wave_pose in wave_sequence:
                 self.move_to_pose(self.poses[wave_pose], velocity_scale=1.0)
                 time.sleep(0.04)
             self.log_progress(start_time)
             
-            # ========== Phase 3: Figure-8 Pattern (1.6-2.8 sec) ==========
-            self.get_logger().info('∞ Phase 3: Figure-8 Pattern (1.6-2.8s)')
-            # Create smooth transitions for figure-8
+            # ========== Phase 3: Achter-Muster (1.6-2.8 Sek) ==========
+            self.get_logger().info('∞ Phase 3: Achter-Muster (1.6-2.8s)')
+            # Sanfte Übergänge für Achter-Muster erstellen
             figure8_poses = [
                 [0.5, -0.6, 0.9, 0.3, 0.5, 0.8],
                 [0.0, -0.7, 1.0, 0.0, 0.4, 1.2],
                 [-0.5, -0.6, 0.9, -0.3, 0.5, 0.8],
                 [0.0, -0.5, 0.8, 0.0, 0.6, 0.4],
             ]
-            for _ in range(2):  # 2 cycles
+            for _ in range(2):  # 2 Zyklen
                 for pose in figure8_poses:
                     self.move_to_pose(pose, velocity_scale=1.0)
                     time.sleep(0.03)
             self.log_progress(start_time)
             
-            # ========== Phase 4: Robot Twist (2.8-4 sec) ==========
-            self.get_logger().info('🌀 Phase 4: Robot Twist (2.8-4s)')
+            # ========== Phase 4: Roboter-Drehung (2.8-4 Sek) ==========
+            self.get_logger().info('🌀 Phase 4: Roboter-Drehung (2.8-4s)')
             twist_sequence = ['twist_1', 'twist_2', 'twist_3', 'twist_4', 'twist_1', 'neutral']
             for twist_pose in twist_sequence:
                 self.move_to_pose(self.poses[twist_pose], velocity_scale=1.0)
                 time.sleep(0.06)
             self.log_progress(start_time)
             
-            # ========== Phase 5: Grand Finale (4-5.6 sec) ==========
-            self.get_logger().info('💥 Phase 5: Grand Finale - ULTRA FAST Combo (4-5.6s)')
+            # ========== Phase 5: Großes Finale (4-5.6 Sek) ==========
+            self.get_logger().info('💥 Phase 5: Großes Finale - ULTRA SCHNELLE Kombination (4-5.6s)')
             finale_sequence = ['finale_1', 'finale_2', 'finale_3', 'finale_4', 'finale_5']
             for finale_pose in finale_sequence:
                 self.move_to_pose(self.poses[finale_pose], velocity_scale=1.0)  # Max speed!
                 time.sleep(0.04)
             
-            # Additional flourish
+            # Zusätzliche Verzierung
             self.move_to_pose(self.poses['greeting'], velocity_scale=1.0)
             time.sleep(0.06)
             self.move_to_pose(self.poses['finale_3'], velocity_scale=1.0)
             self.log_progress(start_time)
             
-            # ========== Phase 6: Bow (5.6-6 sec) ==========
-            self.get_logger().info('🙇 Phase 6: Bow - Final Greeting (5.6-6s)')
+            # ========== Phase 6: Verbeugung (5.6-6 Sek) ==========
+            self.get_logger().info('🙇 Phase 6: Verbeugung - Abschließende Begrüßung (5.6-6s)')
             self.move_to_pose(self.poses['neutral'], velocity_scale=1.0)
             time.sleep(0.06)
             self.move_to_pose(self.poses['bow'], velocity_scale=1.0)
@@ -240,12 +240,12 @@ class RebelDancer(Node):
             self.is_dancing = False
 
     def log_progress(self, start_time):
-        """Log current progress timestamp."""
+        """Aktuellen Fortschritts-Zeitstempel protokollieren."""
         elapsed = time.time() - start_time
         self.get_logger().info(f'⏱️  Progress: {elapsed:.1f}s elapsed')
 
     def shutdown(self):
-        """Clean shutdown of MoveIt."""
+        """Sauberes Herunterfahren von MoveIt."""
         pass
 
 
@@ -253,14 +253,14 @@ def main(args=None):
     rclpy.init(args=args)
     node = RebelDancer()
     
-    # Auto-start dance after 2 seconds
-    node.get_logger().info('⏳ Dance will start automatically in 2 seconds...')
+    # Tanz automatisch nach 2 Sekunden starten
+    node.get_logger().info('⏳ Tanz startet automatisch in 2 Sekunden...')
     time.sleep(2)
     
     node.get_logger().info('🎵 Let\'s dance! 🎵')
     node.perform_dance()
     
-    # Keep node alive for service calls
+    # Node für Service-Aufrufe am Leben halten
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

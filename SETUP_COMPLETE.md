@@ -1,58 +1,58 @@
-# 🚀 ROS2 Docker Project - Setup Complete
+# 🚀 ROS2 Docker-Projekt - Setup abgeschlossen
 
-## ✅ Что создано
+## ✅ Was erstellt wurde
 
-### 📁 Структура проекта
+### 📁 Projektstruktur
 ```
 ROS2/
-├── .git/                   # Git репозиторий
-├── src/                    # ROS2 workspace (пусто, готово к разработке)
-├── Dockerfile              # Multi-stage образ (base→dev→builder→runtime)
-├── docker-compose.yml      # Оркестрация контейнеров
-├── cyclonedds.xml          # DDS конфигурация
-├── .dockerignore           # Исключения для Docker build
-├── .gitignore              # Исключения для Git
-├── Makefile                # Helper команды (Linux/Mac)
-├── ros2-docker.ps1         # PowerShell функции (Windows)
-├── start.sh                # Интерактивный launcher (Linux/Mac)
-├── README.md               # Основная документация
-└── DOCKER_GUIDE.md         # Подробный Docker гайд
+├── .git/                   # Git-Repository
+├── src/                    # ROS2-Workspace (leer, bereit für Entwicklung)
+├── Dockerfile              # Multi-Stage-Image (base→dev→builder→runtime)
+├── docker-compose.yml      # Container-Orchestrierung
+├── cyclonedds.xml          # DDS-Konfiguration
+├── .dockerignore           # Ausschlüsse für Docker-Build
+├── .gitignore              # Ausschlüsse für Git
+├── Makefile                # Helper-Befehle (Linux/Mac)
+├── ros2-docker.ps1         # PowerShell-Funktionen (Windows)
+├── start.sh                # Interaktiver Launcher (Linux/Mac)
+├── README.md               # Hauptdokumentation
+└── DOCKER_GUIDE.md         # Detaillierter Docker-Leitfaden
 ```
 
 ---
 
-## 🎯 Основные возможности
+## 🎯 Hauptfunktionen
 
-### ✨ Docker Features
+### ✨ Docker-Features
 
-- ✅ **Multi-stage build** - оптимизированные образы
-- ✅ **CycloneDDS** - быстрый DDS middleware
-- ✅ **GPU support** - для Gazebo/RViz (NVIDIA)
-- ✅ **Workspace volumes** - live development
-- ✅ **ccache** - быстрая пересборка
-- ✅ **Multi-platform** - x86_64 + ARM64
+- ✅ **Multi-Stage-Build** - optimierte Images
+- ✅ **CycloneDDS** - schnelle DDS-Middleware
+- ✅ **GPU-Unterstützung** - für Gazebo/RViz (NVIDIA)
+- ✅ **Workspace-Volumes** - Live-Entwicklung
+- ✅ **ccache** - schnelles Neubauen
+- ✅ **Multi-Platform** - x86_64 + ARM64
 
-### 📦 Образы
+### 📦 Images
 
-| Образ | Размер | Назначение |
-|-------|--------|------------|
-| base | ~200MB | Минимальный ROS2 |
-| dev | ~400MB | Development |
+| Image | Größe | Zweck |
+|-------|-------|-------|
+| base | ~200MB | Minimales ROS2 |
+| dev | ~400MB | Entwicklung |
 | runtime | ~250MB | Production |
 
 ---
 
-## 🚀 Быстрый запуск
+## 🚀 Schnellstart
 
 ### Windows (PowerShell)
 ```powershell
-# Загрузить команды
+# Befehle laden
 . .\ros2-docker.ps1
 
-# Запустить demo
+# Demo starten
 Start-ROS2Demo
 
-# Dev контейнер
+# Dev-Container
 Start-ROS2Dev
 ```
 
@@ -61,97 +61,97 @@ Start-ROS2Dev
 # Demo talker/listener
 docker-compose up talker listener
 
-# Dev контейнер
+# Dev-Container
 docker-compose run --rm ros2-dev
 
-# Или используйте Makefile
+# Oder Makefile verwenden
 make demo
 make up
 ```
 
 ---
 
-## 📚 Документация
+## 📚 Dokumentation
 
-1. **README.md** - основная документация с быстрым стартом
-2. **DOCKER_GUIDE.md** - подробный гайд:
-   - Архитектура
-   - Сетевая конфигурация (host vs bridge)
-   - GPU setup
-   - Multi-platform build
+1. **README.md** - Hauptdokumentation mit Schnellstart
+2. **DOCKER_GUIDE.md** - detaillierter Leitfaden:
+   - Architektur
+   - Netzwerkkonfiguration (Host vs. Bridge)
+   - GPU-Setup
+   - Multi-Platform-Build
    - Troubleshooting
 
 ---
 
-## 🔧 Helper скрипты
+## 🔧 Helper-Skripte
 
 ### PowerShell (Windows)
 ```powershell
-Build-ROS2        # Собрать образы
-Start-ROS2Dev     # Dev контейнер
+Build-ROS2        # Images bauen
+Start-ROS2Dev     # Dev-Container
 Start-ROS2Demo    # Demo
-Stop-ROS2         # Остановить
-Show-ROS2Logs     # Логи
-Enter-ROS2Shell   # Войти в контейнер
-Remove-ROS2       # Очистить всё
+Stop-ROS2         # Stoppen
+Show-ROS2Logs     # Logs
+Enter-ROS2Shell   # In Container eintreten
+Remove-ROS2       # Alles bereinigen
 ```
 
 ### Makefile (Linux/Mac)
 ```bash
-make build   # Собрать
-make up      # Dev контейнер
+make build   # Bauen
+make up      # Dev-Container
 make demo    # Demo
-make down    # Остановить
-make logs    # Логи
-make shell   # Войти
-make clean   # Очистить
+make down    # Stoppen
+make logs    # Logs
+make shell   # Eintreten
+make clean   # Bereinigen
 ```
 
 ---
 
-## 🌐 GitHub репозиторий
+## 🌐 GitHub-Repository
 
 **URL:** https://github.com/katitusi/ROS2
 
-Весь код запушен и доступен онлайн.
+Der gesamte Code ist gepusht und online verfügbar.
 
 ---
 
-## 📝 Next Steps
+## 📝 Nächste Schritte
 
-### 1. Создать свой ROS2 пакет
+### 1. Eigenes ROS2-Paket erstellen
 
 ```bash
-# Войти в dev контейнер
+# In Dev-Container eintreten
 docker-compose run --rm ros2-dev
 
-# Внутри контейнера
+# Im Container
 cd /ws/src
 ros2 pkg create --build-type ament_python my_robot_pkg
 
-# Собрать
+# Bauen
 cd /ws
 colcon build
 source install/setup.bash
 
-# Запустить
+# Ausführen
 ros2 run my_robot_pkg my_node
 ```
 
-### 2. Настроить для Production
+### 2. Für Production konfigurieren
 
 ```bash
-# Собрать runtime образ
+# Runtime-Image bauen
 docker build --target runtime -t my-robot:v1.0 .
 
-# Запустить на production сервере
+# Auf Production-Server ausführen
 docker run -d --restart unless-stopped \
   --network host \
   my-robot:v1.0 \
   ros2 launch my_package my_launch.py
 ```
 
-### 3. CI/CD Integration
+### 3. CI/CD-Integration
 
 ```yaml
 # .github/workflows/docker.yml
@@ -170,48 +170,48 @@ jobs:
 
 ---
 
-## 🎓 Полезные команды
+## 🎓 Nützliche Befehle
 
-### Разработка
+### Entwicklung
 
 ```bash
-# Запустить ноду в контейнере
+# Node im Container ausführen
 docker-compose run --rm ros2-dev ros2 run demo_nodes_cpp talker
 
-# Посмотреть топики
+# Topics ansehen
 docker-compose run --rm ros2-dev ros2 topic list
 
-# Записать bag
+# Bag aufnehmen
 docker-compose run --rm ros2-dev \
   ros2 bag record -a -o /ws/log/my_bag
 ```
 
-### Отладка
+### Debugging
 
 ```bash
-# Логи контейнера
+# Container-Logs
 docker-compose logs -f talker
 
-# Войти в запущенный контейнер
+# In laufenden Container eintreten
 docker exec -it ros2-dev bash
 
-# Проверить DDS discovery
+# DDS-Discovery prüfen
 docker-compose run --rm ros2-dev ros2 doctor
 ```
 
 ---
 
-## 💡 Tips
+## 💡 Tipps
 
-1. **Для Windows:** Используйте PowerShell, не CMD
-2. **Сеть:** На Windows/Mac используйте bridge network + CycloneDDS unicast
-3. **GPU:** Требуется nvidia-docker2 на Linux
-4. **Volumes:** Монтируйте только `src/`, не `build/`
-5. **Кэш:** ccache volume ускоряет пересборку
+1. **Für Windows:** Verwenden Sie PowerShell, nicht CMD
+2. **Netzwerk:** Unter Windows/Mac Bridge-Network + CycloneDDS Unicast verwenden
+3. **GPU:** Erfordert nvidia-docker2 unter Linux
+4. **Volumes:** Nur `src/` mounten, nicht `build/`
+5. **Cache:** ccache-Volume beschleunigt Neubau
 
 ---
 
-## 🆘 Поддержка
+## 🆘 Support
 
 - [ROS2 Docs](https://docs.ros.org/en/humble/)
 - [Docker Docs](https://docs.docker.com/)
@@ -219,4 +219,4 @@ docker-compose run --rm ros2-dev ros2 doctor
 
 ---
 
-**Проект готов к использованию!** 🎉
+**Projekt ist einsatzbereit!** 🎉

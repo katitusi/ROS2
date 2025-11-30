@@ -1,6 +1,6 @@
-#  Docker für ROS2 - Detaillierte Dokumentation
+# 🐳 Docker für ROS2 - Detaillierte Dokumentation
 
-##  Inhaltsverzeichnis
+## 📋 Inhaltsverzeichnis
 
 1. [Überblick](#überblick)
 2. [Schnellstart](#schnellstart)
@@ -58,13 +58,13 @@ docker-compose up talker listener
 
 ```dockerfile
 FROM ros:humble-ros-base AS base
-   Installation von ROS-Paketen
+  ↓ Installation von ROS-Paketen
 FROM base AS dev
-   dev tools (ccache, gdb, vcstool)
+  ↓ dev tools (ccache, gdb, vcstool)
 FROM dev AS builder
-   colcon build
+  ↓ colcon build
 FROM base AS runtime
-   Kopieren von install/
+  ↓ Kopieren von install/
 ```
 
 **Vorteile:**

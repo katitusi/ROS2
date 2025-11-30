@@ -1,52 +1,52 @@
 #!/bin/bash
 # ============================================
-# Quick start script for ROS2 Docker
+# Schnellstart-Skript für ROS2 Docker
 # ============================================
 
 set -e
 
-# Colors
+# Farben
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m' # Keine Farbe
 
-echo -e "${GREEN}🤖 ROS2 Docker Quick Start${NC}"
+echo -e "${GREEN}🤖 ROS2 Docker Schnellstart${NC}"
 echo ""
 
-# Check if Docker is running
+# Überprüfen, ob Docker läuft
 if ! docker info > /dev/null 2>&1; then
-    echo -e "${RED}❌ Docker не запущен!${NC}"
+    echo -e "${RED}❌ Docker läuft nicht!${NC}"
     exit 1
 fi
 
-echo -e "${YELLOW}Выберите действие:${NC}"
-echo "1) Запустить dev контейнер"
-echo "2) Запустить demo talker/listener"
-echo "3) Собрать образы"
-echo "4) Остановить всё"
+echo -e "${YELLOW}Wählen Sie eine Aktion:${NC}"
+echo "1) Dev-Container starten"
+echo "2) Demo talker/listener starten"
+echo "3) Images bauen"
+echo "4) Alles stoppen"
 echo ""
-read -p "Ваш выбор (1-4): " choice
+read -p "Ihre Wahl (1-4): " choice
 
 case $choice in
     1)
-        echo -e "${GREEN}🚀 Запуск dev контейнера...${NC}"
+        echo -e "${GREEN}🚀 Starte Dev-Container...${NC}"
         docker-compose run --rm ros2-dev
         ;;
     2)
-        echo -e "${GREEN}🎤 Запуск demo talker/listener...${NC}"
+        echo -e "${GREEN}🎤 Starte Demo talker/listener...${NC}"
         docker-compose up talker listener
         ;;
     3)
-        echo -e "${GREEN}🔨 Сборка образов...${NC}"
+        echo -e "${GREEN}🔨 Baue Images...${NC}"
         docker-compose build
         ;;
     4)
-        echo -e "${YELLOW}🛑 Остановка контейнеров...${NC}"
+        echo -e "${YELLOW}🛑 Stoppe Container...${NC}"
         docker-compose down
         ;;
     *)
-        echo -e "${RED}❌ Неверный выбор${NC}"
+        echo -e "${RED}❌ Ungültige Wahl${NC}"
         exit 1
         ;;
 esac
