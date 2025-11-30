@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # Development container with workspace volume
+  # ============================================
+  ros2-dev:
+    build:
+      context: .
+      target: dev
+      dockerfile: Dockerfile
+    image: ros2-workspace:dev
+    container_name: ros2-dev
+    stdin_open: true
+    tty: true
+    # Linux: host network для multicast DDS
+    # Windows/Mac: закомментировать и использовать bridge + CycloneDDS unicast
+    network_mode: host
+    # Для GPU (NVIDIA)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      # Монтируем workspace для разработки
+      - ./src:/ws/src
+      - ./install:/ws/install
+      - ./build:/ws/build
+      - ./log:/ws/log
+      # Кэш для ccache
+      - ccache:/root/.ccache
+    environment:
+      - DISPLAY=${DISPLAY}
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+      # Для GUI приложений (RViz, Gazebo)
+      - QT_X11_NO_MITSHM=1
+    # Для X11 forwarding
+    # volumes:
+    #   - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+  # ============================================
+  # Talker node (demo)
+  # ============================================
+  talker:
+    build:
+      context: .
+      target: base
+      dockerfile: Dockerfile
+    image: ros2-workspace:base
+    container_name: ros2-talker
+    network_mode: host
+    command: ros2 run demo_nodes_cpp talker
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+
+  # ============================================
+  # Listener node (demo)
+  # ============================================
+  listener:
+    build:
+      context: .
+      target: base
+      dockerfile: Dockerfile
+    image: ros2-workspace:base
+    container_name: ros2-listener
+    network_mode: host
+    command: ros2 run demo_nodes_cpp listener
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+
+  # ============================================
+  # Runtime container (production)
+  # ============================================
+  ros2-runtime:
+    build:
+      context: .
+      target: runtime
+      dockerfile: Dockerfile
+    image: ros2-workspace:runtime
+    container_name: ros2-runtime
+    network_mode: host
+    stdin_open: true
+    tty: true
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+
+volumes:
+  ccache:
+    driver: local
+
+# ============================================
+# Для Windows/Mac: bridge network config
+# ============================================
+# networks:
+#   ros2_net:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.20.0.0/16
