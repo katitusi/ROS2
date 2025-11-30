@@ -2,7 +2,7 @@
 # PowerShell скрипты для управления ROS2 Docker
 # Используйте эти команды в PowerShell на Windows
 # ============================================
-
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass  
 # Собрать образы
 function Build-ROS2 {
     docker-compose build
