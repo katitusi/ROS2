@@ -12,6 +12,9 @@ services:
     stdin_open: true
     tty: true
     network_mode: host
+    # Ports are ignored in host mode, but kept for documentation or bridge mode
+    # ports:
+    #   - "9090:9090" 
     volumes:
       - .:/ws
       - ccache:/root/.ccache

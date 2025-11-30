@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     ros-humble-control-msgs \
     ros-humble-realtime-tools \
     ros-humble-nav2-common \
+    ros-humble-rosbridge-server \
     ros-humble-joint-state-publisher-gui \
     git \
     wget \
