@@ -42,8 +42,8 @@ class RebelDancer(Node):
         )
         
         # Configure velocity and acceleration scaling (smooth dancing)
-        self.default_velocity = 0.75  # 75% speed (2.5x faster)
-        self.default_acceleration = 0.75  # 75% accel (2.5x faster)
+        self.default_velocity = 1.0  # 100% speed (MAXIMUM - 5x faster than original)
+        self.default_acceleration = 1.0  # 100% accel (MAXIMUM)
         
         # Start MoveIt2 in a separate thread
         self.executor_thread = Thread(target=self._spin_moveit2, daemon=True)
@@ -173,24 +173,24 @@ class RebelDancer(Node):
         start_time = time.time()
         
         try:
-            # ========== Phase 1: Opening (0-0.8 sec) ==========
-            self.get_logger().info('🎭 Phase 1: Opening - Greeting (0-0.8s)')
-            self.move_to_pose(self.poses['neutral'], velocity_scale=0.5)
-            time.sleep(0.2)
-            self.move_to_pose(self.poses['greeting'], velocity_scale=0.625)
-            time.sleep(0.12)
+            # ========== Phase 1: Opening (0-0.4 sec) ==========
+            self.get_logger().info('🎭 Phase 1: Opening - Greeting (0-0.4s)')
+            self.move_to_pose(self.poses['neutral'], velocity_scale=1.0)
+            time.sleep(0.1)
+            self.move_to_pose(self.poses['greeting'], velocity_scale=1.0)
+            time.sleep(0.06)
             self.log_progress(start_time)
             
-            # ========== Phase 2: Wave Motion (0.8-3.2 sec) ==========
-            self.get_logger().info('🌊 Phase 2: Wave Motion (0.8-3.2s)')
+            # ========== Phase 2: Wave Motion (0.4-1.6 sec) ==========
+            self.get_logger().info('🌊 Phase 2: Wave Motion (0.4-1.6s)')
             wave_sequence = ['wave_1', 'wave_2', 'wave_3', 'wave_2', 'wave_1', 'neutral']
             for wave_pose in wave_sequence:
-                self.move_to_pose(self.poses[wave_pose], velocity_scale=0.75)
-                time.sleep(0.08)
+                self.move_to_pose(self.poses[wave_pose], velocity_scale=1.0)
+                time.sleep(0.04)
             self.log_progress(start_time)
             
-            # ========== Phase 3: Figure-8 Pattern (3.2-5.6 sec) ==========
-            self.get_logger().info('∞ Phase 3: Figure-8 Pattern (3.2-5.6s)')
+            # ========== Phase 3: Figure-8 Pattern (1.6-2.8 sec) ==========
+            self.get_logger().info('∞ Phase 3: Figure-8 Pattern (1.6-2.8s)')
             # Create smooth transitions for figure-8
             figure8_poses = [
                 [0.5, -0.6, 0.9, 0.3, 0.5, 0.8],
@@ -200,38 +200,38 @@ class RebelDancer(Node):
             ]
             for _ in range(2):  # 2 cycles
                 for pose in figure8_poses:
-                    self.move_to_pose(pose, velocity_scale=0.875)
-                    time.sleep(0.06)
+                    self.move_to_pose(pose, velocity_scale=1.0)
+                    time.sleep(0.03)
             self.log_progress(start_time)
             
-            # ========== Phase 4: Robot Twist (5.6-8 sec) ==========
-            self.get_logger().info('🌀 Phase 4: Robot Twist (5.6-8s)')
+            # ========== Phase 4: Robot Twist (2.8-4 sec) ==========
+            self.get_logger().info('🌀 Phase 4: Robot Twist (2.8-4s)')
             twist_sequence = ['twist_1', 'twist_2', 'twist_3', 'twist_4', 'twist_1', 'neutral']
             for twist_pose in twist_sequence:
-                self.move_to_pose(self.poses[twist_pose], velocity_scale=0.75)
-                time.sleep(0.12)
+                self.move_to_pose(self.poses[twist_pose], velocity_scale=1.0)
+                time.sleep(0.06)
             self.log_progress(start_time)
             
-            # ========== Phase 5: Grand Finale (8-11.2 sec) ==========
-            self.get_logger().info('💥 Phase 5: Grand Finale - Fast Combo (8-11.2s)')
+            # ========== Phase 5: Grand Finale (4-5.6 sec) ==========
+            self.get_logger().info('💥 Phase 5: Grand Finale - ULTRA FAST Combo (4-5.6s)')
             finale_sequence = ['finale_1', 'finale_2', 'finale_3', 'finale_4', 'finale_5']
             for finale_pose in finale_sequence:
                 self.move_to_pose(self.poses[finale_pose], velocity_scale=1.0)  # Max speed!
-                time.sleep(0.08)
+                time.sleep(0.04)
             
             # Additional flourish
             self.move_to_pose(self.poses['greeting'], velocity_scale=1.0)
-            time.sleep(0.12)
+            time.sleep(0.06)
             self.move_to_pose(self.poses['finale_3'], velocity_scale=1.0)
             self.log_progress(start_time)
             
-            # ========== Phase 6: Bow (11.2-12 sec) ==========
-            self.get_logger().info('🙇 Phase 6: Bow - Final Greeting (11.2-12s)')
-            self.move_to_pose(self.poses['neutral'], velocity_scale=0.625)
-            time.sleep(0.12)
-            self.move_to_pose(self.poses['bow'], velocity_scale=0.5)
-            time.sleep(0.2)
-            self.move_to_pose(self.poses['neutral'], velocity_scale=0.5)
+            # ========== Phase 6: Bow (5.6-6 sec) ==========
+            self.get_logger().info('🙇 Phase 6: Bow - Final Greeting (5.6-6s)')
+            self.move_to_pose(self.poses['neutral'], velocity_scale=1.0)
+            time.sleep(0.06)
+            self.move_to_pose(self.poses['bow'], velocity_scale=1.0)
+            time.sleep(0.1)
+            self.move_to_pose(self.poses['neutral'], velocity_scale=1.0)
             
             elapsed = time.time() - start_time
             self.get_logger().info(f'✨ Dance completed! Total time: {elapsed:.1f} seconds')

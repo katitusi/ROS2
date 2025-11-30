@@ -86,7 +86,7 @@ ros2 topic pub /human_distance std_msgs/msg/Float32 "data: 0.5" --once
 
 ---
 
-### 3. **Dance Demo** - 12-Sekunden Hochgeschwindigkeits-Choreographie
+### 3. **Dance Demo** - 6-Sekunden ULTRA-Hochgeschwindigkeits-Choreographie ⚡
 Vollständige Tanzchoreographie mit 6 Phasen (inspiriert von Boston Dynamics).
 
 **Start (Methode 1 - Doppelklick):**
@@ -98,14 +98,14 @@ Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\D
 ```
 
 **Choreographie-Phasen:**
-1. **Opening - Greeting** (0-0.8s): Begrüßungsgeste nach oben
-2. **Wave Motion** (0.8-3.2s): Fließende Wellenbewegungen
-3. **Figure-8 Pattern** (3.2-5.6s): Sanfte kreisförmige Muster
-4. **Robot Twist** (5.6-8s): Vollständige Drehung
-5. **Grand Finale** (8-11.2s): Schnelle Kombinationsbewegungen
-6. **Bow** (11.2-12s): Abschluss-Verbeugung
+1. **Opening - Greeting** (0-0.4s): Blitz-Begrüßung
+2. **Wave Motion** (0.4-1.6s): Rasante Wellenbewegungen
+3. **Figure-8 Pattern** (1.6-2.8s): Schnelle Acht-Muster
+4. **Robot Twist** (2.8-4s): Blitz-Drehung
+5. **Grand Finale** (4-5.6s): ULTRA-SCHNELLE Kombination
+6. **Bow** (5.6-6s): Express-Verbeugung
 
-**Hinweis:** Tatsächliche Dauer ~47s (75% Geschwindigkeit, 2.5x schneller als vorher).
+**Hinweis:** Tatsächliche Dauer ~24s (100% MAXIMUM Geschwindigkeit, 5x schneller als Original!).
 
 ---
 
