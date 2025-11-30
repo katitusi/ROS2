@@ -17,7 +17,7 @@ Doppelklick auf `start_sim.bat` im Projektordner
 
 ### Methode 2: PowerShell Befehl
 ```powershell
-Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_sim.bat"
+Start-Process -FilePath ".\start_sim.bat"
 ```
 
 **Was wird gestartet:**
@@ -44,7 +44,7 @@ Doppelklick auf `start_simple_demo.bat`
 
 **Start (Methode 2 - PowerShell):**
 ```powershell
-Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_simple_demo.bat"
+Start-Process -FilePath ".\start_simple_demo.bat"
 ```
 
 **Funktionen:**
@@ -62,7 +62,7 @@ Doppelklick auf `start_safety_demo.bat`
 
 **Start (Methode 2 - PowerShell):**
 ```powershell
-Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_safety_demo.bat"
+Start-Process -FilePath ".\start_safety_demo.bat"
 ```
 
 **Komponenten:**
@@ -94,7 +94,7 @@ Doppelklick auf `start_dance_demo.bat`
 
 **Start (Methode 2 - PowerShell):**
 ```powershell
-Start-Process -FilePath "c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\start_dance_demo.bat"
+Start-Process -FilePath ".\start_dance_demo.bat"
 ```
 
 **Choreographie-Phasen:**
@@ -221,7 +221,7 @@ docker-compose build
 
 ### BAT-Dateien Speicherort:
 ```
-c:\Users\vladimir.sadikov\OneDrive - BE O365 MS-Cloud\Dokumente\ROS2\
+.\
 ├── start_sim.bat              (1. Zuerst starten!)
 ├── start_simple_demo.bat      (2. Dann eine Demo wählen)
 ├── start_safety_demo.bat
