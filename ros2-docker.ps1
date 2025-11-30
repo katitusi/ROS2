@@ -33,6 +33,11 @@ function Enter-ROS2Shell {
     docker exec -it ros2-dev bash
 }
 
+# Настройка Igus ReBeL
+function Setup-IgusRebel {
+    docker-compose run --rm ros2-dev bash -c "chmod +x /ws/setup_igus.sh && /ws/setup_igus.sh"
+}
+
 # Очистить всё
 function Remove-ROS2 {
     docker-compose down -v --rmi all
@@ -45,6 +50,7 @@ Write-Host "Доступные команды:" -ForegroundColor Cyan
 Write-Host "  Build-ROS2        - Собрать Docker образы"
 Write-Host "  Start-ROS2Dev     - Запустить dev контейнер"
 Write-Host "  Start-ROS2Demo    - Запустить demo talker/listener"
+Write-Host "  Setup-IgusRebel   - Скачать и настроить Igus ReBeL пакеты"
 Write-Host "  Stop-ROS2         - Остановить все контейнеры"
 Write-Host "  Show-ROS2Logs     - Показать логи"
 Write-Host "  Enter-ROS2Shell   - Войти в dev контейнер"
@@ -52,4 +58,5 @@ Write-Host "  Remove-ROS2       - Удалить все контейнеры и 
 Write-Host ""
 Write-Host "Использование:" -ForegroundColor Yellow
 Write-Host "  . .\ros2-docker.ps1    # Загрузить команды"
-Write-Host "  Start-ROS2Demo         # Запустить demo"
+Write-Host "  Setup-IgusRebel        # Установить робота"
+

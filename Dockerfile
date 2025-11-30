@@ -4,7 +4,7 @@
 # ============================================
 
 # ---- Stage 1: Base ROS2 image ----
-FROM ros:humble-ros-base AS base
+FROM osrf/ros:humble-desktop AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
@@ -16,6 +16,11 @@ RUN apt-get update && apt-get install -y \
     ros-humble-rmw-cyclonedds-cpp \
     ros-humble-demo-nodes-cpp \
     ros-humble-demo-nodes-py \
+    ros-humble-moveit \
+    ros-humble-ros2-control \
+    ros-humble-ros2-controllers \
+    ros-humble-xacro \
+    ros-humble-joint-state-publisher-gui \
     git \
     wget \
     curl \

@@ -20,7 +20,7 @@ services:
       - ccache:/root/.ccache
     command: bash -c "source /opt/ros/humble/setup.bash && bash"
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=host.docker.internal:0.0
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
       # Для GUI приложений (RViz, Gazebo)
