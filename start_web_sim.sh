@@ -18,7 +18,8 @@ fi
 
 # 1. Start Rosbridge Server in the background
 echo "🌐 Starting Rosbridge Server (ws://0.0.0.0:9090)..."
-ros2 launch rosbridge_server rosbridge_websocket_launch.xml &
+# Launch with explicit parameters to fix connection drops
+ros2 run rosbridge_server rosbridge_websocket --ros-args -p port:=9090 -p address:=0.0.0.0 -p unregister_timeout:=9999999.0 &
 PID_BRIDGE=$!
 
 # Wait a moment for bridge to start

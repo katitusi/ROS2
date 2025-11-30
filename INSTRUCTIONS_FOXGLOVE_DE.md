@@ -4,9 +4,9 @@ Diese Methode ermöglicht die Steuerung des Roboters über den Browser, ohne Ins
 
 ## Starten
 1. Öffnen Sie ein Terminal im Ordner `ROS2`.
-2. Führen Sie das Skript aus:
+2. Führen Sie das Skript aus (beachten Sie das Flag `--service-ports`):
    ```powershell
-   docker-compose run --rm -p 9090:9090 ros2-dev bash -c "./start_web_sim.sh"
+   docker-compose run --rm --service-ports ros2-dev bash -c "./start_web_sim.sh"
    ```
 
 ## Foxglove Studio Konfiguration

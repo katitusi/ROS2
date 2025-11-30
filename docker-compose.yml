@@ -11,10 +11,10 @@ services:
     container_name: ros2-dev
     stdin_open: true
     tty: true
-    network_mode: host
-    # Ports are ignored in host mode, but kept for documentation or bridge mode
-    # ports:
-    #   - "9090:9090" 
+    # network_mode: host
+    # Ports are required for Windows/Mac when not using host mode
+    ports:
+      - "9090:9090" 
     volumes:
       - .:/ws
       - ccache:/root/.ccache

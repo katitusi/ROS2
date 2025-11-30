@@ -4,11 +4,11 @@
 
 ## Запуск
 1. Откройте терминал в папке `ROS2`.
-2. Запустите скрипт:
+2. Запустите скрипт (обратите внимание на флаг `--service-ports`):
    ```powershell
-   docker-compose run --rm -p 9090:9090 ros2-dev bash -c "./start_web_sim.sh"
+   docker-compose run --rm --service-ports ros2-dev bash -c "./start_web_sim.sh"
    ```
-   *Примечание: Мы явно пробрасываем порт 9090, так как в режиме `network_mode: host` на Windows порты не всегда работают корректно без явного указания, либо если вы используете WSL2 backend.*
+   *Примечание: Мы используем `--service-ports`, чтобы пробросить порт 9090 из контейнера в Windows.*
 
 ## Настройка Foxglove Studio
 1. Откройте браузер (Chrome/Edge) и перейдите на [https://studio.foxglove.dev](https://studio.foxglove.dev).
