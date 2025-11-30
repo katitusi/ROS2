@@ -17,8 +17,11 @@ fi
 echo "📦 Installing dependencies..."
 cd /ws
 apt-get update
+# Install missing dependencies manually to ensure build success
+apt-get install -y ros-humble-control-msgs ros-humble-realtime-tools ros-humble-xacro
 rosdep update
-rosdep install --from-paths src --ignore-src -r -y
+# Skip warehouse_ros_mongo as it often causes installation issues and is optional for demos
+rosdep install --from-paths src --ignore-src -r -y --skip-keys "warehouse_ros_mongo"
 
 echo "🔨 Building workspace..."
 colcon build --symlink-install
