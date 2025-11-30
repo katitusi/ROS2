@@ -14,14 +14,15 @@ services:
     # Linux: host network для multicast DDS
     # Windows/Mac: закомментировать и использовать bridge + CycloneDDS unicast
     network_mode: host
-    # Для GPU (NVIDIA)
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    # Для GPU (NVIDIA) - только для Linux с nvidia-docker2
+    # Раскомментируйте на Linux:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
     volumes:
       # Монтируем workspace для разработки
       - ./src:/ws/src
