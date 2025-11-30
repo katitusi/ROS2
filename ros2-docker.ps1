@@ -1,62 +1,62 @@
 # ============================================
-# PowerShell скрипты для управления ROS2 Docker
-# Используйте эти команды в PowerShell на Windows
+# PowerShell-Skripte für ROS2 Docker-Verwaltung
+# Verwenden Sie diese Befehle in PowerShell unter Windows
 # ============================================
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass  
-# Собрать образы
+# Images bauen
 function Build-ROS2 {
     docker-compose build
 }
 
-# Запустить dev контейнер
+# Dev-Container starten
 function Start-ROS2Dev {
     docker-compose run --rm ros2-dev
 }
 
-# Запустить demo talker/listener
+# Demo talker/listener starten
 function Start-ROS2Demo {
     docker-compose up talker listener
 }
 
-# Остановить контейнеры
+# Container stoppen
 function Stop-ROS2 {
     docker-compose down
 }
 
-# Показать логи
+# Logs anzeigen
 function Show-ROS2Logs {
     docker-compose logs -f
 }
 
-# Войти в контейнер
+# In Container eintreten
 function Enter-ROS2Shell {
     docker exec -it ros2-dev bash
 }
 
-# Настройка Igus ReBeL
+# Igus ReBeL Setup
 function Setup-IgusRebel {
     docker-compose run --rm ros2-dev bash -c "chmod +x /ws/setup_igus.sh && /ws/setup_igus.sh"
 }
 
-# Очистить всё
+# Alles bereinigen
 function Remove-ROS2 {
     docker-compose down -v --rmi all
 }
 
-# Экспортируем функции
-Write-Host "ROS2 Docker команды загружены!" -ForegroundColor Green
+# Funktionen exportieren
+Write-Host "ROS2 Docker Befehle geladen!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Доступные команды:" -ForegroundColor Cyan
-Write-Host "  Build-ROS2        - Собрать Docker образы"
-Write-Host "  Start-ROS2Dev     - Запустить dev контейнер"
-Write-Host "  Start-ROS2Demo    - Запустить demo talker/listener"
-Write-Host "  Setup-IgusRebel   - Скачать и настроить Igus ReBeL пакеты"
-Write-Host "  Stop-ROS2         - Остановить все контейнеры"
-Write-Host "  Show-ROS2Logs     - Показать логи"
-Write-Host "  Enter-ROS2Shell   - Войти в dev контейнер"
-Write-Host "  Remove-ROS2       - Удалить все контейнеры и образы"
+Write-Host "Verfügbare Befehle:" -ForegroundColor Cyan
+Write-Host "  Build-ROS2        - Docker Images bauen"
+Write-Host "  Start-ROS2Dev     - Dev-Container starten"
+Write-Host "  Start-ROS2Demo    - Demo talker/listener starten"
+Write-Host "  Setup-IgusRebel   - Igus ReBeL Pakete herunterladen und einrichten"
+Write-Host "  Stop-ROS2         - Alle Container stoppen"
+Write-Host "  Show-ROS2Logs     - Logs anzeigen"
+Write-Host "  Enter-ROS2Shell   - In Dev-Container eintreten"
+Write-Host "  Remove-ROS2       - Alle Container und Images entfernen"
 Write-Host ""
-Write-Host "Использование:" -ForegroundColor Yellow
-Write-Host "  . .\ros2-docker.ps1    # Загрузить команды"
-Write-Host "  Setup-IgusRebel        # Установить робота"
+Write-Host "Verwendung:" -ForegroundColor Yellow
+Write-Host "  . .\ros2-docker.ps1    # Befehle laden"
+Write-Host "  Setup-IgusRebel        # Roboter installieren"
 

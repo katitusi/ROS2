@@ -230,6 +230,28 @@ docker-compose build
 
 ---
 
+## 🔨 Docker Image Build
+
+Wenn Sie das Docker-Image neu bauen oder aktualisieren möchten:
+
+### Option 1: Mit docker-compose
+```powershell
+docker-compose build ros2-dev
+```
+
+### Option 2: Mit Build-ROS2 Funktion
+```powershell
+. .\ros2-docker.ps1
+Build-ROS2
+```
+
+### Option 3: Direkt mit Docker
+```powershell
+docker build --target dev -t ros2-workspace:dev .
+```
+
+---
+
 ## 📄 Weitere Dokumentation
 - [SAFETY_DEMO_TASK.md](SAFETY_DEMO_TASK.md) - Technische Spezifikation Safety Demo
 - [DANCE_DEMO_TASK.md](DANCE_DEMO_TASK.md) - Technische Spezifikation Dance Demo
