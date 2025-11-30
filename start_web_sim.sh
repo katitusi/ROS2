@@ -19,8 +19,14 @@ fi
 # 1. Start Rosbridge Server in the background
 echo "🌐 Starting Rosbridge Server (ws://0.0.0.0:9090)..."
 # Launch with explicit parameters to fix connection drops
-ros2 run rosbridge_server rosbridge_websocket --ros-args -p port:=9090 -p address:=0.0.0.0 -p unregister_timeout:=9999999.0 &
+# Using tornado backend which is often more stable than the default
+ros2 run rosbridge_server rosbridge_websocket --ros-args -p port:=9090 -p address:=0.0.0.0 -p unregister_timeout:=9999999.0 -p use_compression:=false &
 PID_BRIDGE=$!
+
+# Start rosapi node (required for Foxglove to list topics/services)
+echo "ℹ️ Starting rosapi node..."
+ros2 run rosapi rosapi_node &
+PID_API=$!
 
 # Wait a moment for bridge to start
 sleep 2
@@ -39,4 +45,4 @@ echo "👉 Connect to 'Rosbridge' at ws://localhost:9090"
 echo "Press Ctrl+C to stop."
 
 # Wait for processes
-wait $PID_SIM $PID_BRIDGE
+wait $PID_SIM $PID_BRIDGE $PID_API
