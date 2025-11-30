@@ -4,7 +4,7 @@
 # ============================================
 
 # ---- Stage 1: Base ROS2 image ----
-FROM osrf/ros:humble-ros-base AS base
+FROM ros:humble-ros-base AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp

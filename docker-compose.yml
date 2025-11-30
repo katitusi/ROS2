@@ -46,33 +46,23 @@ services:
   # Talker node (demo)
   # ============================================
   talker:
-    build:
-      context: .
-      target: base
-      dockerfile: Dockerfile
-    image: ros2-workspace:base
+    image: ros:humble-ros-base
     container_name: ros2-talker
     network_mode: host
-    command: ros2 run demo_nodes_cpp talker
+    command: bash -c "apt-get update && apt-get install -y ros-humble-demo-nodes-cpp && source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker"
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
   # ============================================
   # Listener node (demo)
   # ============================================
   listener:
-    build:
-      context: .
-      target: base
-      dockerfile: Dockerfile
-    image: ros2-workspace:base
+    image: ros:humble-ros-base
     container_name: ros2-listener
     network_mode: host
-    command: ros2 run demo_nodes_cpp listener
+    command: bash -c "apt-get update && apt-get install -y ros-humble-demo-nodes-cpp && source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp listener"
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
   # ============================================
   # Runtime container (production)
