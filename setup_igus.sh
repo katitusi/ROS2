@@ -18,7 +18,7 @@ echo "📦 Installing dependencies..."
 cd /ws
 apt-get update
 # Install missing dependencies manually to ensure build success
-apt-get install -y ros-humble-control-msgs ros-humble-realtime-tools ros-humble-xacro
+apt-get install -y ros-humble-control-msgs ros-humble-realtime-tools ros-humble-xacro ros-humble-launch-param-builder
 rosdep update
 # Skip warehouse_ros_mongo as it often causes installation issues and is optional for demos
 rosdep install --from-paths src --ignore-src -r -y --skip-keys "warehouse_ros_mongo"

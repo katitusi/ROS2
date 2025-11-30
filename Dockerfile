@@ -20,6 +20,10 @@ RUN apt-get update && apt-get install -y \
     ros-humble-ros2-control \
     ros-humble-ros2-controllers \
     ros-humble-xacro \
+    ros-humble-launch-param-builder \
+    ros-humble-control-msgs \
+    ros-humble-realtime-tools \
+    ros-humble-nav2-common \
     ros-humble-joint-state-publisher-gui \
     git \
     wget \
