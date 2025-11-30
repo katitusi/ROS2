@@ -1,34 +1,35 @@
-# Симуляция Igus ReBeL 6DOF в Docker
+# Запуск симуляции Igus ReBeL (Docker + Web Визуализация)
 
-## Предварительные требования
-1. **Docker Desktop** должен быть установлен и запущен.
-2. **VcXsrv (XLaunch)** для отображения графического интерфейса (RViz) на Windows.
+Этот метод использует **Foxglove Studio** (в браузере) для визуализации, что позволяет избежать проблем с настройкой X-сервера (VcXsrv) на Windows.
 
-## Настройка VcXsrv
-1. Запустите **XLaunch**.
-2. Выберите "Multiple windows".
-3. "Start no client".
-4. **Важно**: Поставьте галочку **"Disable access control"**.
-5. Нажмите Finish.
+## 1. Предварительные требования
+*   Установленный и запущенный **Docker Desktop**.
 
-## Запуск симуляции
-Откройте терминал в папке `ROS2` и выполните команду:
+## 2. Запуск симуляции
+Откройте терминал (PowerShell) в папке проекта и выполните команду:
 
 ```powershell
-docker-compose run --rm ros2-dev bash -c 'source install/setup.bash && ros2 launch irc_ros_moveit_config rebel.launch.py hardware_protocol:=mock_hardware'
+docker-compose run --rm --service-ports ros2-dev bash -c "./start_web_sim.sh"
 ```
 
-## Управление роботом
-1. После запуска откроется окно **RViz**.
-2. Вы увидите 3D модель робота.
-3. Используйте плагин **MotionPlanning** (обычно слева внизу).
-4. Во вкладке **Planning**:
-   - Перетащите шар на конце робота (end-effector) в желаемое положение.
-   - Нажмите **Plan**, чтобы увидеть траекторию.
-   - Нажмите **Execute**, чтобы робот выполнил движение.
+*   Эта команда запустит контейнер.
+*   Запустит симуляцию робота (Mock Hardware).
+*   Запустит сервер `rosbridge` на порту `9090`.
 
-## Остановка
-Чтобы остановить симуляцию, нажмите `Ctrl+C` в терминале или выполните в другом окне:
-```powershell
-docker stop $(docker ps -q --filter ancestor=ros2-workspace:dev)
-```
+## 3. Подключение визуализации (Foxglove Studio)
+1.  Откройте браузер (Chrome, Edge) и перейдите на сайт: [https://studio.foxglove.dev](https://studio.foxglove.dev)
+2.  Нажмите **Open connection**.
+3.  Выберите тип подключения: **Rosbridge**.
+4.  Введите адрес: `ws://localhost:9090`
+5.  **Важно**: В настройках подключения (справа) убедитесь, что **Compression** (Сжатие) установлено в **none**.
+6.  Нажмите **Open**.
+
+## 4. Настройка интерфейса
+1.  Добавьте панель **3D**.
+2.  В настройках панели 3D:
+    *   **Display Frame**: выберите `world`.
+    *   В разделе **Topics** включите `Robot Model` (обычно подтягивается из `/robot_description`).
+3.  Теперь вы должны видеть 3D модель робота.
+
+## 5. Остановка
+Чтобы выключить симуляцию, нажмите `Ctrl+C` в терминале, где запущен Docker.

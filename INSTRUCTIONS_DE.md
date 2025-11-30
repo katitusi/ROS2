@@ -1,34 +1,35 @@
-# Igus ReBeL 6DOF Simulation in Docker
+# Igus ReBeL Simulation starten (Docker + Web Visualisierung)
 
-## Voraussetzungen
-1. **Docker Desktop** muss installiert und gestartet sein.
-2. **VcXsrv (XLaunch)** für die grafische Ausgabe (RViz) unter Windows.
+Diese Methode verwendet **Foxglove Studio** (im Browser) zur Visualisierung. Dies vermeidet Probleme mit der X-Server-Konfiguration (VcXsrv) unter Windows.
 
-## VcXsrv Konfiguration
-1. Starten Sie **XLaunch**.
-2. Wählen Sie "Multiple windows".
-3. "Start no client".
-4. **Wichtig**: Aktivieren Sie **"Disable access control"**.
-5. Klicken Sie auf Finish.
+## 1. Voraussetzungen
+*   Installiertes und laufendes **Docker Desktop**.
 
-## Simulation starten
-Öffnen Sie ein Terminal im Ordner `ROS2` und führen Sie folgenden Befehl aus:
+## 2. Simulation starten
+Öffnen Sie ein Terminal (PowerShell) im Projektordner und führen Sie folgenden Befehl aus:
 
 ```powershell
-docker-compose run --rm ros2-dev bash -c 'source install/setup.bash && ros2 launch irc_ros_moveit_config rebel.launch.py hardware_protocol:=mock_hardware'
+docker-compose run --rm --service-ports ros2-dev bash -c "./start_web_sim.sh"
 ```
 
-## Steuerung des Roboters
-1. Nach dem Start öffnet sich das **RViz** Fenster.
-2. Sie sehen das 3D-Modell des Roboters.
-3. Nutzen Sie das **MotionPlanning** Plugin (normalerweise unten links).
-4. Im Reiter **Planning**:
-   - Ziehen Sie die Kugel am Ende des Roboters (End-Effector) an die gewünschte Position.
-   - Klicken Sie auf **Plan**, um die Trajektorie zu berechnen.
-   - Klicken Sie auf **Execute**, um die Bewegung auszuführen.
+*   Dieser Befehl startet den Container.
+*   Startet die Robotersimulation (Mock Hardware).
+*   Startet den `rosbridge` Server auf Port `9090`.
 
-## Beenden
-Um die Simulation zu stoppen, drücken Sie `Strg+C` im Terminal oder führen Sie in einem neuen Fenster aus:
-```powershell
-docker stop $(docker ps -q --filter ancestor=ros2-workspace:dev)
-```
+## 3. Visualisierung verbinden (Foxglove Studio)
+1.  Öffnen Sie Ihren Browser (Chrome, Edge) und gehen Sie auf: [https://studio.foxglove.dev](https://studio.foxglove.dev)
+2.  Klicken Sie auf **Open connection**.
+3.  Wählen Sie den Verbindungstyp: **Rosbridge**.
+4.  Geben Sie die Adresse ein: `ws://localhost:9090`
+5.  **Wichtig**: Stellen Sie in den Verbindungseinstellungen (rechts) sicher, dass **Compression** auf **none** gesetzt ist.
+6.  Klicken Sie auf **Open**.
+
+## 4. Interface Einrichtung
+1.  Fügen Sie ein **3D** Panel hinzu.
+2.  In den 3D-Panel-Einstellungen:
+    *   **Display Frame**: Wählen Sie `world`.
+    *   Aktivieren Sie unter **Topics** das `Robot Model` (wird normalerweise aus `/robot_description` geladen).
+3.  Sie sollten nun das 3D-Modell des Roboters sehen.
+
+## 5. Beenden
+Um die Simulation zu stoppen, drücken Sie `Strg+C` in dem Terminal, in dem Docker läuft.
